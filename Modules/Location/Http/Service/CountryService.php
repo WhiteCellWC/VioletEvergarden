@@ -11,39 +11,47 @@ use Modules\Location\Http\Cache\CountryCache;
 
 class CountryService implements CountryServiceInterface
 {
-    public function get($id = null, $relations = null, $condsIn = null)
+    public function get($id, ?array $relations = null, ?array $condsIn = null)
     {
-        return Cache::remember(CountryCache::GET . "_" . $id, CountryCache::GET_EXPIRY, function () use ($id, $relations, $condsIn) {
-            return Country::when(
-                $id,
-                fn($query, $id) => $query->where(Country::id, $id)
-            )->when(
-                $relations,
-                fn($query, $relations) => $query->with($relations)
-            )->when(
-                $condsIn,
-                fn($query, $condsIn) => $query->condsInByColumns($condsIn)
-            )->first();
-        });
+        try {
+            return Cache::remember(CountryCache::GET . "_" . $id, CountryCache::GET_EXPIRY, function () use ($id, $relations, $condsIn) {
+                return Country::when(
+                    $id,
+                    fn($query, $id) => $query->where(Country::id, $id)
+                )->when(
+                    $relations,
+                    fn($query, $relations) => $query->with($relations)
+                )->when(
+                    $condsIn,
+                    fn($query, $condsIn) => $query->condsInByColumns($condsIn)
+                )->first();
+            });
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
-    public function getAll($relations = null, $condsIn = null, $condsNotIn = null, $orderBy = null)
+    public function getAll(?array $relations = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
     {
-        return Cache::remember(CountryCache::GET_ALL, CountryCache::GET_ALL_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
-            return Country::when(
-                $relations,
-                fn($query, $relations) => $query->with($relations)
-            )->when(
-                $condsIn,
-                fn($query, $condsIn) => $query->condsInByColumns($condsIn)
-            )->when(
-                $condsNotIn,
-                fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
-            )->when(
-                $orderBy,
-                fn($query, $orderBy) => $query->orderByColumns($orderBy)
-            )->get();
-        });
+        try {
+            return Cache::remember(CountryCache::GET_ALL, CountryCache::GET_ALL_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
+                return Country::when(
+                    $relations,
+                    fn($query, $relations) => $query->with($relations)
+                )->when(
+                    $condsIn,
+                    fn($query, $condsIn) => $query->condsInByColumns($condsIn)
+                )->when(
+                    $condsNotIn,
+                    fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
+                )->when(
+                    $orderBy,
+                    fn($query, $orderBy) => $query->orderByColumns($orderBy)
+                )->get();
+            });
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     public function create(CountryDto $countryDto)
@@ -57,16 +65,28 @@ class CountryService implements CountryServiceInterface
 
     public function update(CountryDto $countryDto)
     {
-        return Country::update($countryDto->toArray());
+        try {
+            $country = $this->get($countryDto->id);
+            $country->fill($countryDto->toArray());
+            $country->save();
+
+            return $country;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
-    public function delete($id, $returnColumn = null)
+    public function delete(string $id)
     {
-        $country = Country::find($id);
-        $returnValue = $country?->{$returnColumn};
-        $country->delete();
+        try {
+            $country = $this->get($id);
+            $name = $country->{Country::name};
+            $country->delete();
 
-        return $returnValue;
+            return $name;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     // Private Functions

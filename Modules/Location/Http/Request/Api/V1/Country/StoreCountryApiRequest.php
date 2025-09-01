@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Location\Http\Request;
+namespace Modules\Location\Http\Request\Api\V1\Country;
 
 use App\Models\Country;
 use Illuminate\Foundation\Http\FormRequest;

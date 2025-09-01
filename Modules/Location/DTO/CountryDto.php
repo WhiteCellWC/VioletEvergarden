@@ -24,10 +24,10 @@ class CountryDto
         ];
     }
 
-    public static function fromRequest(Request $request)
+    public static function fromRequest(Request $request, $id = null)
     {
         return new self(
-            $request->id,
+            $id,
             $request->name,
             $request->isoCode,
             $request->phoneCode

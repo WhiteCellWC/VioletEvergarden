@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Location\Action;
+namespace Modules\Location\Action\Country;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;

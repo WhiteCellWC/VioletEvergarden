@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\Location\Http\Request\Api\V1\State;
 
 use App\Models\Country;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCountryRequest extends FormRequest
+class UpdateStateApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class StoreCountryRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'isoCode' => 'required|unique:' . Country::getTable() . Country::isoCode,
-            'phoneCode' => 'required'
+            'countryId' => 'required|exists:' . Country::table . ',' . Country::id
         ];
     }
 }
