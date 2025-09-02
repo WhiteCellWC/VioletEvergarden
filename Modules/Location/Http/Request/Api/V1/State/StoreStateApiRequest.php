@@ -24,7 +24,7 @@ class StoreStateApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'countryId' => 'required|exists:' . Country::table . ',' . Country::id
+            'country_id' => 'required|exists:' . Country::table . ',' . Country::id
         ];
     }
 }

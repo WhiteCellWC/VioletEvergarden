@@ -18,8 +18,7 @@ class DeleteCountryAction
         try {
             $countryName = $this->countryService->delete($id);
 
-            Cache::forget(CountryCache::GET_ALL);
-            Cache::forget(CountryCache::GET . '_' . $id);
+            Cache::tags([CountryCache::GET_ALL, CountryCache::GET . '_' . $id])->flush();
             DB::commit();
 
             return $countryName;

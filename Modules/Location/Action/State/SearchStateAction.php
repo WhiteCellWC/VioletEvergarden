@@ -13,7 +13,7 @@ class SearchStateAction
     public function handle(Request $request)
     {
         try {
-            $states = $this->stateService->getAll([], $request->condsIn, $request->condsNotIn, $request->orderBy);
+            $states = $this->stateService->getAll($request->condsIn, $request->condsNotIn, $request->orderBy);
 
             return $states;
         } catch (Throwable $e) {

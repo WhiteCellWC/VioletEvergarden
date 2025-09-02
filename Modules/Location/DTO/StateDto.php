@@ -27,7 +27,7 @@ class StateDto
         return new self(
             $id,
             $request->name,
-            $request->countryId
+            $request->country_id
         );
     }
 }

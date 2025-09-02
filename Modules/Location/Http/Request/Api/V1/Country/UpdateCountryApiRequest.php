@@ -24,8 +24,8 @@ class UpdateCountryApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'isoCode' => 'required|unique:' . Country::table . ',' . Country::isoCode . ',' . $this->route('country'),
-            'phoneCode' => 'required'
+            'iso_code' => 'required|unique:' . Country::table . ',' . Country::isoCode . ',' . $this->route('country'),
+            'phone_code' => 'required'
         ];
     }
 }

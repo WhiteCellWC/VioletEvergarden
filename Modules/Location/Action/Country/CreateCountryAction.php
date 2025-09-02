@@ -22,7 +22,7 @@ class CreateCountryAction
 
             $country = $this->countryService->create($countryDto);
 
-            Cache::forget(CountryCache::GET_ALL);
+            Cache::tags([CountryCache::GET_ALL])->flush();
             DB::commit();
 
             return $country;

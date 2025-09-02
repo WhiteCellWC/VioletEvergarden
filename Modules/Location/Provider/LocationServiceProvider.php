@@ -27,6 +27,7 @@ class LocationServiceProvider extends ServiceProvider
     {
         Route::middleware('api')
             ->prefix('api/v1')
+            ->as('api.v1.')
             ->group(function () {
                 require __DIR__ . '/../routes/api_v1.php';
             });

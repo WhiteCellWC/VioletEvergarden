@@ -22,7 +22,7 @@ class UpdateStateAction
 
             $state = $this->stateService->update($stateDto);
 
-            Cache::forget(StateCache::GET . '_' . $stateDto->id);
+            Cache::tags([StateCache::GET_ALL, StateCache::GET . '_' . $id])->flush();
             DB::commit();
 
             return $state;

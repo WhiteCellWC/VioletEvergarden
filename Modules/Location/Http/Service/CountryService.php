@@ -3,39 +3,43 @@
 namespace Modules\Location\Http\Service;
 
 use App\Models\Country;
+use App\Models\State;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Modules\Location\Contract\CountryServiceInterface;
+use Modules\Location\Contract\StateServiceInterface;
 use Modules\Location\DTO\CountryDto;
 use Modules\Location\Http\Cache\CountryCache;
 
 class CountryService implements CountryServiceInterface
 {
-    public function get($id, ?array $relations = null)
+    public function get($id)
     {
         try {
-            return Cache::remember(CountryCache::GET . "_" . $id, CountryCache::GET_EXPIRY, function () use ($id, $relations) {
-                return Country::when(
-                    $id,
-                    fn($query, $id) => $query->where(Country::id, $id)
-                )->when(
-                    $relations,
-                    fn($query, $relations) => $query->with($relations)
-                )->first();
-            });
+            return Cache::tags([CountryCache::GET . "_" . $id])->remember(
+                CountryCache::GET . "_" . $id,
+                CountryCache::GET_EXPIRY,
+                fn() => Country::find($id)
+            );
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function getAll(?array $relations = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
+    public function getAll(?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
     {
         try {
-            return Cache::remember(CountryCache::GET_ALL, CountryCache::GET_ALL_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
-                return Country::when(
-                    $relations,
-                    fn($query, $relations) => $query->with($relations)
-                )->when(
+            $cacheKey = CountryCache::GET_ALL . ':' . md5(json_encode([
+                'condsIn'   => $condsIn,
+                'condsNotIn' => $condsNotIn,
+                'orderBy'   => $orderBy,
+            ]));
+
+            return Cache::tags([CountryCache::GET_ALL])->remember(
+                $cacheKey,
+                CountryCache::GET_ALL_EXPIRY,
+                fn() =>
+                Country::when(
                     $condsIn,
                     fn($query, $condsIn) => $query->condsInByColumns($condsIn)
                 )->when(
@@ -44,8 +48,9 @@ class CountryService implements CountryServiceInterface
                 )->when(
                     $orderBy,
                     fn($query, $orderBy) => $query->orderByColumns($orderBy)
-                )->get();
-            });
+                )->get()
+
+            );
         } catch (Exception $e) {
             throw $e;
         }
@@ -85,6 +90,4 @@ class CountryService implements CountryServiceInterface
             throw $e;
         }
     }
-
-    // Private Functions
 }

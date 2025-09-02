@@ -22,7 +22,7 @@ class CreateStateAction
 
             $state = $this->stateService->create($stateDto);
 
-            Cache::forget(StateCache::GET_ALL);
+            Cache::tags([StateCache::GET_ALL])->flush();
             DB::commit();
 
             return $state;

@@ -22,7 +22,7 @@ class UpdateCountryAction
 
             $country = $this->countryService->update($countryDto);
 
-            Cache::forget(CountryCache::GET . '_' . $countryDto->id);
+            Cache::tags([CountryCache::GET_ALL, CountryCache::GET . '_' . $countryDto->id])->flush();
             DB::commit();
 
             return $country;

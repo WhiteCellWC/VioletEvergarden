@@ -6,9 +6,9 @@ use Modules\Location\DTO\StateDto;
 
 interface StateServiceInterface
 {
-    public function get(string $id, ?array $relations = null);
+    public function get(string $id);
 
-    public function getAll(?array $relations = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null);
+    public function getAll(?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null);
 
     public function create(StateDto $stateDto);
 

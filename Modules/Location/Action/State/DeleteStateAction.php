@@ -18,8 +18,7 @@ class DeleteStateAction
         try {
             $stateName = $this->stateService->delete($id);
 
-            Cache::forget(StateCache::GET_ALL);
-            Cache::forget(StateCache::GET . '_' . $id);
+            Cache::tags([StateCache::GET_ALL, StateCache::GET . '_' . $id])->flush();
             DB::commit();
 
             return $stateName;

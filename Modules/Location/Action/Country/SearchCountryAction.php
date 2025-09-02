@@ -3,6 +3,7 @@
 namespace Modules\Location\Action\Country;
 
 use Illuminate\Http\Request;
+use Modules\Location\DTO\SearchCountryDto;
 use Modules\Location\Contract\CountryServiceInterface;
 use Throwable;
 
@@ -13,7 +14,12 @@ class SearchCountryAction
     public function handle(Request $request)
     {
         try {
-            $countries = $this->countryService->getAll([], $request->condsIn, $request->condsNotIn, $request->orderBy);
+            $condsIn = SearchCountryDto::fromRequest($request)->toArray();
+
+            /**
+             * @todo condsIn need to be implmented
+             */
+            $countries = $this->countryService->getAll($condsIn, [], $request->orderBy);
 
             return $countries;
         } catch (Throwable $e) {

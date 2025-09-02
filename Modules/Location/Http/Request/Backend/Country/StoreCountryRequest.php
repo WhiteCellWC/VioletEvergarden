@@ -24,8 +24,8 @@ class StoreCountryRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'isoCode' => 'required|unique:' . Country::table . ',' . Country::isoCode,
-            'phoneCode' => 'required'
+            'iso_code' => 'required|unique:' . Country::table . ',' . Country::isoCode,
+            'phone_code' => 'required'
         ];
     }
 }
