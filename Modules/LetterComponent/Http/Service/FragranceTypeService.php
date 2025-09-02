@@ -1,23 +1,23 @@
 <?php
 
-namespace Modules\Location\Http\Service;
+namespace Modules\LetterComponent\Http\Service;
 
-use App\Models\Country;
+use App\Models\FragranceType;
 use Exception;
 use Illuminate\Support\Facades\Cache;
-use Modules\Location\Contract\CountryServiceInterface;
-use Modules\Location\DTO\CountryDto;
-use Modules\Location\Http\Cache\CountryCache;
+use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
+use Modules\LetterComponent\DTO\FragranceTypeDto;
+use Modules\LetterComponent\Http\Cache\FragranceTypeCache;
 
-class CountryService implements CountryServiceInterface
+class FragranceTypeService implements FragranceTypeServiceInterface
 {
-    public function get($id, ?array $relations = null)
+    public function get(string $id, ?array $relations = null)
     {
         try {
-            return Cache::remember(CountryCache::GET . "_" . $id, CountryCache::GET_EXPIRY, function () use ($id, $relations) {
-                return Country::when(
+            return Cache::remember(FragranceTypeCache::GET . "_" . $id, FragranceTypeCache::GET_EXPIRY, function () use ($id, $relations) {
+                return FragranceType::when(
                     $id,
-                    fn($query, $id) => $query->where(Country::id, $id)
+                    fn($query, $id) => $query->where(FragranceType::id, $id)
                 )->when(
                     $relations,
                     fn($query, $relations) => $query->with($relations)
@@ -31,8 +31,8 @@ class CountryService implements CountryServiceInterface
     public function getAll(?array $relations = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
     {
         try {
-            return Cache::remember(CountryCache::GET_ALL, CountryCache::GET_ALL_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
-                return Country::when(
+            return Cache::remember(FragranceTypeCache::GET_ALL, FragranceTypeCache::GET_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
+                return FragranceType::when(
                     $relations,
                     fn($query, $relations) => $query->with($relations)
                 )->when(
@@ -51,23 +51,23 @@ class CountryService implements CountryServiceInterface
         }
     }
 
-    public function create(CountryDto $countryDto)
+    public function create(FragranceTypeDto $fragranceTypeDto)
     {
         try {
-            return Country::create($countryDto->toArray());
+            return FragranceType::create($fragranceTypeDto->toArray());
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function update(CountryDto $countryDto)
+    public function update(FragranceTypeDto $fragranceTypeDto)
     {
         try {
-            $country = $this->get($countryDto->id);
-            $country->fill($countryDto->toArray());
-            $country->save();
+            $fragranceType = $this->get($fragranceTypeDto->id);
+            $fragranceType->fill($fragranceTypeDto->toArray());
+            $fragranceType->save();
 
-            return $country;
+            return $fragranceType;
         } catch (Exception $e) {
             throw $e;
         }
@@ -76,15 +76,13 @@ class CountryService implements CountryServiceInterface
     public function delete(string $id)
     {
         try {
-            $country = $this->get($id);
-            $name = $country->{Country::name};
-            $country->delete();
+            $fragranceType = $this->get($id);
+            $name = $fragranceType->{FragranceType::name};
+            $fragranceType->delete();
 
             return $name;
         } catch (Exception $e) {
             throw $e;
         }
     }
-
-    // Private Functions
 }

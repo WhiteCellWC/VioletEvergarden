@@ -2,9 +2,12 @@
 
 namespace Modules\Location\Provider;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Modules\Location\Contract\CountryServiceInterface;
+use Modules\Location\Contract\StateServiceInterface;
 use Modules\Location\Http\Service\CountryService;
+use Modules\Location\Http\Service\StateService;
 
 class LocationServiceProvider extends ServiceProvider
 {
@@ -14,6 +17,7 @@ class LocationServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(CountryServiceInterface::class, CountryService::class);
+        $this->app->bind(StateServiceInterface::class, StateService::class);
     }
 
     /**
@@ -21,6 +25,10 @@ class LocationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Route::middleware('api')
+            ->prefix('api/v1')
+            ->group(function () {
+                require __DIR__ . '/../routes/api_v1.php';
+            });
     }
 }

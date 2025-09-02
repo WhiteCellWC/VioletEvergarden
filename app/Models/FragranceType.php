@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use Hamcrest\Description;
-use Illuminate\Database\Eloquent\Model;
-
-class FragranceType extends Model
+class FragranceType extends BaseModel
 {
     const table = 'fragrance_types';
 
     const id = 'id';
 
+    const name = 'name';
+
     const image = 'image';
 
-    const Description = 'description';
+    const description = 'description';
 
     const isPremium = 'is_premium';
 

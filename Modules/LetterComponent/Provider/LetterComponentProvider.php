@@ -1,0 +1,31 @@
+<?php
+
+namespace Modules\LetterComponent\Provider;
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
+use Modules\LetterComponent\Http\Service\FragranceTypeService;
+
+class LetterComponentProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->app->bind(FragranceTypeServiceInterface::class, FragranceTypeService::class);
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        Route::middleware('api')
+            ->prefix('api/v1')
+            ->group(function () {
+                require __DIR__ . '/../routes/api_v1.php';
+            });
+    }
+}

@@ -11,19 +11,16 @@ use Modules\Location\Http\Cache\StateCache;
 
 class StateService implements StateServiceInterface
 {
-    public function get(string $id, ?array $relations = null, ?array $condsIn = null)
+    public function get(string $id, ?array $relations = null)
     {
         try {
-            return Cache::remember(StateCache::GET . "_" . $id, StateCache::GET_EXPIRY, function () use ($id, $relations, $condsIn) {
+            return Cache::remember(StateCache::GET . "_" . $id, StateCache::GET_EXPIRY, function () use ($id, $relations) {
                 return State::when(
                     $id,
                     fn($query, $id) => $query->where(State::id, $id)
                 )->when(
                     $relations,
                     fn($query, $relations) => $query->with($relations)
-                )->when(
-                    $condsIn,
-                    fn($query, $condsIn) => $query->condsInByColumns($condsIn)
                 )->first();
             });
         } catch (Exception $e) {
