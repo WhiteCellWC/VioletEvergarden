@@ -4,6 +4,8 @@ namespace App\Models;
 
 class State extends BaseModel
 {
+    protected $appends = ['relations'];
+
     const table = 'states';
 
     const id = 'id';
@@ -35,6 +37,15 @@ class State extends BaseModel
     public function recipients()
     {
         return $this->hasMany(Recipient::class, Recipient::stateId);
+    }
+    #endregion
+
+    #region Relations Attribute
+    public function getRelationsAttribute(): array
+    {
+        return [
+            'country' => route('api.v1.countries.show', $this->{State::countryId}),
+        ];
     }
     #endregion
 }

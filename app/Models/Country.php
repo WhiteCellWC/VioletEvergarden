@@ -5,6 +5,8 @@ namespace App\Models;
 
 class Country extends BaseModel
 {
+    protected $appends = ['relations'];
+
     const table = 'countries';
 
     const id = 'id';
@@ -20,6 +22,7 @@ class Country extends BaseModel
     const createdBy = 'created_by';
 
     const updatedBy = 'updated_by';
+
     protected $fillable = [
         'name',
         'iso_code',
@@ -38,6 +41,15 @@ class Country extends BaseModel
     public function states()
     {
         return $this->hasMany(State::class, State::countryId);
+    }
+    #endregion
+
+    #region Relations Attribute
+    public function getRelationsAttribute(): array
+    {
+        return [
+            'states' => route('api.v1.states.index', [State::countryId => $this->{Country::id}]),
+        ];
     }
     #endregion
 }
