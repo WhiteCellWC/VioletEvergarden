@@ -6,9 +6,9 @@ use Modules\Location\DTO\CountryDto;
 
 interface CountryServiceInterface
 {
-    public function get(string $id);
+    public function get(string $id, string|array|null $relation = null);
 
-    public function getAll(?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null);
+    public function getAll(array|string|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null);
 
     public function create(CountryDto $countryDto);
 

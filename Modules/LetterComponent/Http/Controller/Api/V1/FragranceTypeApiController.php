@@ -32,9 +32,7 @@ class FragranceTypeApiController extends Controller
         try {
             $fragranceTypes = $this->searchFragranceTypeAction->handle($request);
 
-            $fragranceTypesResource = FragranceTypeApiResource::collection($fragranceTypes);
-
-            return response()->json($fragranceTypesResource);
+            return FragranceTypeApiResource::collection($fragranceTypes);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -48,9 +46,7 @@ class FragranceTypeApiController extends Controller
         try {
             $fragranceType = $this->createFragranceTypeAction->handle($request);
 
-            $fragranceTypeResource = new FragranceTypeApiResource($fragranceType);
-
-            return response()->json($fragranceTypeResource);
+            return new FragranceTypeApiResource($fragranceType);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -64,9 +60,7 @@ class FragranceTypeApiController extends Controller
         try {
             $fragranceType = $this->fragranceTypeService->get($id);
 
-            $fragranceTypeResource = new FragranceTypeApiResource($fragranceType);
-
-            return response()->json($fragranceTypeResource);
+            return new FragranceTypeApiResource($fragranceType);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -80,9 +74,7 @@ class FragranceTypeApiController extends Controller
         try {
             $fragranceType = $this->updateFragranceTypeAction->handle($request, $id);
 
-            $fragranceTypeResource = new FragranceTypeApiResource($fragranceType);
-
-            return response()->json($fragranceTypeResource);
+            return new FragranceTypeApiResource($fragranceType);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }

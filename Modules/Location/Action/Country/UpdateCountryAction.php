@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Location\Contract\CountryServiceInterface;
 use Modules\Location\DTO\CountryDto;
 use Modules\Location\Http\Cache\CountryCache;
+use Modules\Location\Http\Cache\StateCache;
 use Throwable;
 
 class UpdateCountryAction
@@ -23,6 +24,7 @@ class UpdateCountryAction
             $country = $this->countryService->update($countryDto);
 
             Cache::tags([CountryCache::GET_ALL, CountryCache::GET . '_' . $countryDto->id])->flush();
+            Cache::tags([StateCache::GET_ALL, StateCache::GET])->flush();
             DB::commit();
 
             return $country;

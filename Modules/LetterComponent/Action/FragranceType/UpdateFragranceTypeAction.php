@@ -22,7 +22,7 @@ class UpdateFragranceTypeAction
 
             $fragranceType = $this->fragranceTypeService->update($fragranceTypeDto);
 
-            Cache::forget(FragranceTypeCache::GET . '_' . $fragranceTypeDto->id);
+            Cache::tags([FragranceTypeCache::GET_ALL, FragranceTypeCache::GET . '_' . $id])->flush();
             DB::commit();
 
             return $fragranceType;

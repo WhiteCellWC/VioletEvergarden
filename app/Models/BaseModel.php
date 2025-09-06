@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constant\Constant;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
@@ -33,15 +34,31 @@ class BaseModel extends Model
         return $query;
     }
 
-    public function scopeOrderByColumns($query, $columnMap)
+    public function scopeQueryOptions($query, $columnMap)
     {
-        if (!empty($columnMap) && count($columnMap) > 0) {
-            foreach ($columnMap as $column => $order) {
-                if ($this->isValidColumn($column) && $order) {
-                    $query->orderBy($column, $order);
-                }
+        if (empty($columnMap) || count($columnMap) == 0) {
+            return $columnMap;
+        }
+
+        foreach ($columnMap as $key => $value) {
+            if (empty($value)) continue;
+
+            switch ($key) {
+                case 'orderBy':
+                    $query->orderBy($value, $columnMap['orderType'] ?? Constant::descending);
+                    break;
+
+                case 'offset':
+                    $query->offset($value);
+                    break;
+
+                case 'limit':
+                    $query->limit($value);
+                    break;
             }
         }
+
+        return $query;
     }
     #endregion
 

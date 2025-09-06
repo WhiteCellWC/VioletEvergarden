@@ -22,7 +22,7 @@ class CreateFragranceTypeAction
 
             $fragranceType = $this->fragranceTypeService->create($fragranceTypeDto);
 
-            Cache::forget(FragranceTypeCache::GET_ALL);
+            Cache::tags([FragranceTypeCache::GET_ALL])->flush();
             DB::commit();
 
             return $fragranceType;

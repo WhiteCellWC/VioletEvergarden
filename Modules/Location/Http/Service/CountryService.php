@@ -2,54 +2,69 @@
 
 namespace Modules\Location\Http\Service;
 
+use App\Http\Service\BaseService;
 use App\Models\Country;
-use App\Models\State;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Modules\Location\Contract\CountryServiceInterface;
-use Modules\Location\Contract\StateServiceInterface;
 use Modules\Location\DTO\CountryDto;
 use Modules\Location\Http\Cache\CountryCache;
+use Modules\Shared\DTO\QueryOptionsDto;
 
-class CountryService implements CountryServiceInterface
+class CountryService extends BaseService implements CountryServiceInterface
 {
-    public function get($id)
+    public function get(string $id, array|string|null $relation = null)
     {
         try {
-            return Cache::tags([CountryCache::GET . "_" . $id])->remember(
-                CountryCache::GET . "_" . $id,
+            $cacheKey = CountryCache::GET . ':' . md5(json_encode([
+                'relation' => $relation,
+            ]));
+
+            return Cache::tags([CountryCache::GET, CountryCache::GET . "_" . $id])->remember(
+                $cacheKey,
                 CountryCache::GET_EXPIRY,
-                fn() => Country::find($id)
+                fn() => Country::when(
+                    $id,
+                    fn($query, $id) => $query->where(Country::id, $id)
+                )->when(
+                    $relation,
+                    fn($query, $relation) => $query->with($relation)
+                )->first()
             );
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function getAll(?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
+    public function getAll(array|string|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null)
     {
         try {
             $cacheKey = CountryCache::GET_ALL . ':' . md5(json_encode([
+                'relation' => $relation,
                 'condsIn'   => $condsIn,
                 'condsNotIn' => $condsNotIn,
-                'orderBy'   => $orderBy,
+                'queryOptions'   => $queryOptions,
             ]));
 
             return Cache::tags([CountryCache::GET_ALL])->remember(
                 $cacheKey,
                 CountryCache::GET_ALL_EXPIRY,
-                fn() =>
-                Country::when(
-                    $condsIn,
-                    fn($query, $condsIn) => $query->condsInByColumns($condsIn)
-                )->when(
-                    $condsNotIn,
-                    fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
-                )->when(
-                    $orderBy,
-                    fn($query, $orderBy) => $query->orderByColumns($orderBy)
-                )->get()
-
+                fn() => $this->fetch(
+                    Country::when(
+                        $relation,
+                        fn($query, $relation) => $query->with($relation)
+                    )->when(
+                        $condsIn,
+                        fn($query, $condsIn) => $query->condsInByColumns($condsIn)
+                    )->when(
+                        $condsNotIn,
+                        fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
+                    )->when(
+                        $queryOptions,
+                        fn($query, $queryOptions) => $query->queryOptions($queryOptions)
+                    ),
+                    $queryOptions
+                )
             );
         } catch (Exception $e) {
             throw $e;

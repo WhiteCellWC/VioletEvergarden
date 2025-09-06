@@ -18,8 +18,7 @@ class DeleteFragranceTypeAction
         try {
             $fragranceTypeName = $this->fragranceTypeService->delete($id);
 
-            Cache::forget(FragranceTypeCache::GET_ALL);
-            Cache::forget(FragranceTypeCache::GET . '_' . $id);
+            Cache::tags([FragranceTypeCache::GET_ALL, FragranceTypeCache::GET . '_' . $id])->flush();
             DB::commit();
 
             return $fragranceTypeName;

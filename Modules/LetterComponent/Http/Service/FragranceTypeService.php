@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Http\Service;
 
+use App\Http\Service\BaseService;
 use App\Models\FragranceType;
 use Exception;
 use Illuminate\Support\Facades\Cache;
@@ -9,43 +10,54 @@ use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
 use Modules\LetterComponent\DTO\FragranceTypeDto;
 use Modules\LetterComponent\Http\Cache\FragranceTypeCache;
 
-class FragranceTypeService implements FragranceTypeServiceInterface
+class FragranceTypeService extends BaseService implements FragranceTypeServiceInterface
 {
-    public function get(string $id, ?array $relations = null)
+    public function get(string $id, string|array|null $relation = null)
     {
         try {
-            return Cache::remember(FragranceTypeCache::GET . "_" . $id, FragranceTypeCache::GET_EXPIRY, function () use ($id, $relations) {
-                return FragranceType::when(
+            return Cache::tags([FragranceTypeCache::GET, FragranceTypeCache::GET . "_" . $id])->remember(
+                FragranceTypeCache::GET . "_" . $id,
+                FragranceTypeCache::GET_EXPIRY,
+                fn() => FragranceType::when(
                     $id,
                     fn($query, $id) => $query->where(FragranceType::id, $id)
                 )->when(
-                    $relations,
-                    fn($query, $relations) => $query->with($relations)
-                )->first();
-            });
+                    $relation,
+                    fn($query, $relation) => $query->with($relation)
+                )->first()
+            );
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function getAll(?array $relations = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $orderBy = null)
+    public function getAll(string|array|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null)
     {
         try {
-            return Cache::remember(FragranceTypeCache::GET_ALL, FragranceTypeCache::GET_EXPIRY, function () use ($relations, $condsIn, $condsNotIn, $orderBy) {
-                return FragranceType::when(
-                    $relations,
-                    fn($query, $relations) => $query->with($relations)
-                )->when(
-                    $condsIn,
-                    fn($query, $condsIn) => $query->condsInByColumns($condsIn)
-                )->when(
-                    $condsNotIn,
-                    fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
-                )->when(
-                    $orderBy,
-                    fn($query, $orderBy) => $query->orderByColumns($orderBy)
-                )->get();
-            });
+            $cacheKey = FragranceTypeCache::GET_ALL . ':' . md5(json_encode([
+                'relation' => $relation,
+                'condsIn'   => $condsIn,
+                'condsNotIn' => $condsNotIn,
+                'queryOptions' => $queryOptions
+            ]));
+
+            return Cache::tags([FragranceTypeCache::GET_ALL])->remember(
+                $cacheKey,
+                FragranceTypeCache::GET_EXPIRY,
+                fn() => $this->fetch(
+                    FragranceType::when(
+                        $condsIn,
+                        fn($query, $condsIn) => $query->condsInByColumns($condsIn)
+                    )->when(
+                        $condsNotIn,
+                        fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
+                    )->when(
+                        $queryOptions,
+                        fn($query, $queryOptions) => $query->queryOptions($queryOptions)
+                    ),
+                    $queryOptions
+                )
+            );
         } catch (Exception $e) {
             throw $e;
         }

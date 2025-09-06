@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Modules\Location\Contract\CountryServiceInterface;
 use Modules\Location\Http\Cache\CountryCache;
+use Modules\Location\Http\Cache\StateCache;
 use Throwable;
 
 class DeleteCountryAction
@@ -19,6 +20,7 @@ class DeleteCountryAction
             $countryName = $this->countryService->delete($id);
 
             Cache::tags([CountryCache::GET_ALL, CountryCache::GET . '_' . $id])->flush();
+            Cache::tags([StateCache::GET_ALL, StateCache::GET])->flush();
             DB::commit();
 
             return $countryName;

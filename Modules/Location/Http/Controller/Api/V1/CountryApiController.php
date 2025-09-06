@@ -32,9 +32,8 @@ class CountryApiController extends Controller
         try {
             $countries = $this->searchCountryAction->handle($request);
 
-            $countriesResource = CountryApiResource::collection($countries);
+            return CountryApiResource::collection($countries);
 
-            return response()->json($countriesResource);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -48,9 +47,8 @@ class CountryApiController extends Controller
         try {
             $country = $this->createCountryAction->handle($request);
 
-            $countryResource = new CountryApiResource($country);
+            return new CountryApiResource($country);
 
-            return response()->json($countryResource);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -62,11 +60,10 @@ class CountryApiController extends Controller
     public function show(string $id)
     {
         try {
-            $country = $this->countryService->get($id);
+            $country = $this->countryService->get($id, ['states']);
 
-            $countryResource = new CountryApiResource($country);
+            return new CountryApiResource($country);
 
-            return response()->json($countryResource);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
@@ -80,9 +77,8 @@ class CountryApiController extends Controller
         try {
             $country = $this->updateCountryAction->handle($request, $id);
 
-            $countryResource = new CountryApiResource($country);
+            return new CountryApiResource($country);
 
-            return response()->json($countryResource);
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
