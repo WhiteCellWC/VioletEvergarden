@@ -5,21 +5,21 @@ namespace App\Models;
 
 class Country extends BaseModel
 {
-    const table = 'countries';
+    public const table = 'countries';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const name = 'name';
+    public const name = 'name';
 
-    const isoCode = 'iso_code';
+    public const isoCode = 'iso_code';
 
-    const phoneCode = 'phone_code';
+    public const phoneCode = 'phone_code';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
 
     protected $fillable = [
         'name',

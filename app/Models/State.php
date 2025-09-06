@@ -4,19 +4,19 @@ namespace App\Models;
 
 class State extends BaseModel
 {
-    const table = 'states';
+    public const table = 'states';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const name = 'name';
+    public const name = 'name';
 
-    const countryId = 'country_id';
+    public const countryId = 'country_id';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
 
     protected $fillable = [
         'name',

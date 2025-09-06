@@ -6,27 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class EnvelopeType extends Model
 {
-    const table = 'envelope_types';
+    public const table = 'envelope_types';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const image = 'image';
+    public const name = 'name';
 
-    const stock = 'stock';
+    public const image = 'image';
 
-    const price = 'price';
+    public const stock = 'stock';
 
-    const description = 'description';
+    public const price = 'price';
 
-    const isPremium = 'is_premium';
+    public const description = 'description';
 
-    const status = 'status';
+    public const isPremium = 'is_premium';
 
-    const version = 'version';
+    public const discount = 'discount';
 
-    const createdBy = 'created_by';
+    public const status = 'status';
 
-    const updatedBy = 'updated_by';
+    public const version = 'version';
+
+    public const createdBy = 'created_by';
+
+    public const updatedBy = 'updated_by';
 
     protected $fillable = [
         'name',
@@ -35,6 +39,7 @@ class EnvelopeType extends Model
         'price',
         'description',
         'is_premium',
+        'discount',
         'status',
         'version',
         'created_by',

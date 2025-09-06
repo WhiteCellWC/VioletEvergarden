@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Location\Http\Cache;
+namespace Modules\LetterComponent\Http\Cache;
 
-class CountryCache
+class EnvelopeTypeCache
 {
-    public const BASE = 'COUNTRY';
+    public const BASE = 'ENVELOPE_TYPE';
 
     public const GET = self::BASE . '_GET';
 

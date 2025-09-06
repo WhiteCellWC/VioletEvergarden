@@ -4,29 +4,29 @@ namespace App\Models;
 
 class FragranceType extends BaseModel
 {
-    const table = 'fragrance_types';
+    public const table = 'fragrance_types';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const name = 'name';
+    public const name = 'name';
 
-    const image = 'image';
+    public const image = 'image';
 
-    const description = 'description';
+    public const description = 'description';
 
-    const isPremium = 'is_premium';
+    public const isPremium = 'is_premium';
 
-    const price = 'price';
+    public const price = 'price';
 
-    const discount = 'discount';
+    public const discount = 'discount';
 
-    const status = 'status';
+    public const status = 'status';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
 
     protected $fillable = [
         'name',

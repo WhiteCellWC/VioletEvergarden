@@ -4,7 +4,9 @@ namespace Modules\LetterComponent\Provider;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Modules\LetterComponent\Contract\EnvelopeTypeServiceInterface;
 use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
+use Modules\LetterComponent\Http\Service\EnvelopeTypeService;
 use Modules\LetterComponent\Http\Service\FragranceTypeService;
 
 class LetterComponentProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class LetterComponentProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(FragranceTypeServiceInterface::class, FragranceTypeService::class);
+        $this->app->bind(EnvelopeTypeServiceInterface::class, EnvelopeTypeService::class);
     }
 
     /**
