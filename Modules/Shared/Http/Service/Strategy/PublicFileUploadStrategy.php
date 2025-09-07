@@ -2,6 +2,7 @@
 
 namespace Modules\Shared\Http\Service\Strategy;
 
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -10,20 +11,43 @@ use RuntimeException;
 
 class PublicFileUploadStrategy implements FileUploadStrategyInterface
 {
-    public function upload(UploadedFile $uploadedFile, string $path = '/')
+    public function upload(UploadedFile $uploadedFile, string $path = '/'): string
     {
-        $path = rtrim($path, '/') . '/';
+        try {
+            $path = trim($path, '/') . '/';
 
-        $originalName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeName = Str::slug($originalName);
-        $filename = now()->unix() . '_' . $safeName . '.' . $uploadedFile->getClientOriginalExtension();
+            if (!Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->makeDirectory($path);
+            }
 
-        if (Storage::disk('public')->exists("{$path}{$filename}")) {
-            throw new RuntimeException("File already exists: {$filename}");
+            $originalName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeName = Str::slug($originalName);
+            $filename = now()->unix() . '_' . $safeName . '.' . $uploadedFile->getClientOriginalExtension();
+
+            if (Storage::disk('public')->exists("{$path}{$filename}")) {
+                throw new RuntimeException("File already exists: {$filename}");
+            }
+
+            Storage::disk('public')->putFileAs($path, $uploadedFile, $filename);
+
+            return Storage::url("{$path}{$filename}");
+        } catch (Exception $e) {
+            throw $e;
         }
+    }
 
-        Storage::disk('public')->putFileAs($path, $uploadedFile, $filename);
+    public function delete(string $filePath): bool
+    {
+        try {
+            $relativePath = str_replace(Storage::url(''), '', $filePath);
 
-        return Storage::url("{$path}{$filename}");
+            if (Storage::disk('public')->exists($relativePath)) {
+                return Storage::disk('public')->delete($relativePath);
+            }
+
+            return false;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

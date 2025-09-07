@@ -11,8 +11,6 @@ class EnvelopeType extends BaseModel
 
     public const name = 'name';
 
-    public const image = 'image';
-
     public const stock = 'stock';
 
     public const price = 'price';
@@ -33,7 +31,6 @@ class EnvelopeType extends BaseModel
 
     protected $fillable = [
         'name',
-        'image',
         'stock',
         'price',
         'description',
@@ -54,6 +51,11 @@ class EnvelopeType extends BaseModel
     public function letters()
     {
         return $this->hasMany(Letter::class, Letter::envelopeTypeId);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(CoreImage::class, 'imageable');
     }
     #endregion
 }

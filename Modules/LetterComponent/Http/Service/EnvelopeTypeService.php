@@ -18,13 +18,11 @@ class EnvelopeTypeService extends BaseService implements EnvelopeTypeServiceInte
             return Cache::tags([EnvelopeTypeCache::GET, EnvelopeTypeCache::GET . "_" . $id])->remember(
                 EnvelopeTypeCache::GET . "_" . $id,
                 EnvelopeTypeCache::GET_EXPIRY,
-                fn() => EnvelopeType::when(
-                    $id,
-                    fn($query, $id) => $query->where(EnvelopeType::id, $id)
-                )->when(
-                    $relation,
-                    fn($query, $relation) => $query->with($relation)
-                )->first()
+                fn() => EnvelopeType::query()
+                    ->when(
+                        $relation,
+                        fn($query, $relation) => $query->with($relation)
+                    )->findOrFail($id)
             );
         } catch (Exception $e) {
             throw $e;
@@ -85,10 +83,10 @@ class EnvelopeTypeService extends BaseService implements EnvelopeTypeServiceInte
         }
     }
 
-    public function delete(string $id)
+    public function delete(string|EnvelopeType $id)
     {
         try {
-            $envelopeType = $this->get($id);
+            $envelopeType = $id instanceof EnvelopeType ? $id : $this->get($id);
             $name = $envelopeType->{EnvelopeType::name};
             $envelopeType->delete();
 

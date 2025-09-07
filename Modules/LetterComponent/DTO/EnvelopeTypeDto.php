@@ -4,13 +4,15 @@ namespace Modules\LetterComponent\DTO;
 
 use App\Models\EnvelopeType;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class EnvelopeTypeDto
 {
     public function __construct(
         public ?int $id,
         public string $name,
-        public string $image,
+        public array $images,
+        public ?array $deleteImages,
         public int $stock,
         public float $price,
         public string $description,
@@ -24,7 +26,6 @@ class EnvelopeTypeDto
         return [
             EnvelopeType::id => $this->id,
             EnvelopeType::name => $this->name,
-            EnvelopeType::image => $this->image,
             EnvelopeType::stock => $this->stock,
             EnvelopeType::price => $this->price,
             EnvelopeType::description => $this->description,
@@ -39,13 +40,14 @@ class EnvelopeTypeDto
         return new self(
             $id,
             $request->name,
-            $request->image,
+            $request->images ?? [],
+            $request->delete_images,
             $request->stock,
             $request->price,
             $request->description,
-            $request->is_premium,
+            $request->is_premium ?? false,
             $request->discount,
-            $request->status
+            $request->status ?? true
         );
     }
 }

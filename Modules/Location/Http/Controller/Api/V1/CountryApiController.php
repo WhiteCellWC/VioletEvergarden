@@ -60,7 +60,7 @@ class CountryApiController extends Controller
     public function show(string $id)
     {
         try {
-            $country = $this->countryService->get($id, ['states']);
+            $country = $this->countryService->get($id);
 
             return new CountryApiResource($country);
 

@@ -15,14 +15,13 @@ return new class extends Migration
         Schema::create('envelope_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
             $table->bigInteger('stock');
             $table->decimal('price');
             $table->text('description');
             $table->boolean('is_premium')->default(false);
             $table->decimal('discount')->nullable();
             $table->boolean('status')->default(true);
-            $table->bigInteger('version')->default(1)   ;
+            $table->bigInteger('version')->default(1);
             $table->foreignId('created_by')->nullable()->constrained(User::table);
             $table->foreignId('updated_by')->nullable()->constrained(User::table);
             $table->timestamps();

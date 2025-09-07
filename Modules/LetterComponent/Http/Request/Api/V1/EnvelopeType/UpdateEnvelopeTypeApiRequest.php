@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Http\Request\Api\V1\EnvelopeType;
 
+use App\Models\CoreImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEnvelopeTypeApiRequest extends FormRequest
@@ -23,9 +24,12 @@ class UpdateEnvelopeTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'nullable|image',
+            'images' => 'nullable|array',
+            'images.*' => 'image',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:' . CoreImage::table . ',' . CoreImage::id,
             'stock' => 'required|integer|min:0',
-            'price' => 'required|decimal:8,2',
+            'price' => 'required|numeric',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
             'discount' => 'nullable|min:1|max:100',

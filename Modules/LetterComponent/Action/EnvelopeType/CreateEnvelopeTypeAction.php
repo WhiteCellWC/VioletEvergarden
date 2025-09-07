@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\DB;
 use Modules\LetterComponent\Contract\EnvelopeTypeServiceInterface;
 use Modules\LetterComponent\DTO\EnvelopeTypeDto;
 use Modules\LetterComponent\Http\Cache\EnvelopeTypeCache;
+use Modules\Shared\Contract\CoreImageServiceInterface;
 use Throwable;
 
 class CreateEnvelopeTypeAction
 {
-    public function __construct(protected EnvelopeTypeServiceInterface $envelopeTypeService) {}
+    public function __construct(
+        protected EnvelopeTypeServiceInterface $envelopeTypeService,
+        protected CoreImageServiceInterface $coreImageService,
+    ) {}
 
     public function handle(Request $request)
     {
@@ -21,6 +25,8 @@ class CreateEnvelopeTypeAction
             $envelopeTypeDto = EnvelopeTypeDto::fromRequest($request);
 
             $envelopeType = $this->envelopeTypeService->create($envelopeTypeDto);
+
+            $this->coreImageService->attachImages($envelopeType, $envelopeTypeDto->images, '/Uploads/EnvelopeTypes');
 
             Cache::tags([EnvelopeTypeCache::GET_ALL])->flush();
             DB::commit();

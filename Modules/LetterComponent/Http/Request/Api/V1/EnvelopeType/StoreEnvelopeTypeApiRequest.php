@@ -23,9 +23,10 @@ class StoreEnvelopeTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required|image',
+            'images' => 'required|array',
+            'images.*' => 'image',
             'stock' => 'required|integer|min:0',
-            'price' => 'required|decimal:8,2',
+            'price' => 'required|numeric',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
             'discount' => 'nullable|min:1|max:100',

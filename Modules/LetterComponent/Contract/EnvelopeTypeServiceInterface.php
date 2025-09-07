@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Contract;
 
+use App\Models\EnvelopeType;
 use Modules\LetterComponent\DTO\EnvelopeTypeDto;
 
 interface EnvelopeTypeServiceInterface
@@ -14,5 +15,5 @@ interface EnvelopeTypeServiceInterface
 
     public function update(EnvelopeTypeDto $fragranceTypeDto);
 
-    public function delete(string $id);
+    public function delete(string|EnvelopeType $id);
 }

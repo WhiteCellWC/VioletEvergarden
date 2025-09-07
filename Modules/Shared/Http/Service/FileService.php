@@ -3,45 +3,42 @@
 namespace Modules\Shared\Http\Service;
 
 use App\Constant\Constant;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Modules\Shared\Contract\FileServiceInterface;
+use Throwable;
 
 class FileService implements FileServiceInterface
 {
     public function __construct(protected FileUploadStrategyResolver $fileUploadStrategyResolver) {}
 
-    public function singleUpload(UploadedFile $uploadedFile, string $path = '/'): string
+    public function upload(UploadedFile $uploadedFile, string $path = '/'): string
     {
-        /**
-         * @todo Change uploadType Parameter to fetch upload option from database
-         */
-        $fileUploadStrategy = $this->fileUploadStrategyResolver->resolve(Constant::publicUpload);
+        try {
+            /**
+             * @todo Change uploadType Parameter to fetch upload option from database
+             */
+            $fileUploadStrategy = $this->fileUploadStrategyResolver->resolve(Constant::publicUpload);
 
-        $url = $fileUploadStrategy->upload($uploadedFile, $path);
+            $url = $fileUploadStrategy->upload($uploadedFile, $path);
 
-        return $url;
+            return $url;
+        } catch (Throwable $e) {
+            throw $e;
+        }
     }
 
-    /**
-     * @param UploadedFile[] $uploadedFiles
-     * @param string $path
-     * @return string[]  List of uploaded file URLs
-     */
-    public function multiUpload(array $uploadedFiles, string $path = '/'): array
+    public function delete(string $path): bool
     {
-        /**
-         * @todo Change uploadType Parameter to fetch upload option from database
-         */
-        $fileUploadStrategy = $this->fileUploadStrategyResolver->resolve(Constant::publicUpload);
+        try {
+            /**
+             * @todo Change uploadType Parameter to fetch upload option from database
+             */
+            $fileUploadStrategy = $this->fileUploadStrategyResolver->resolve(Constant::publicUpload);
 
-        $urls = [];
-
-        foreach ($uploadedFiles as $uploadedFile) {
-            if ($uploadedFile instanceof UploadedFile) {
-                $urls[] = $fileUploadStrategy->upload($uploadedFile, $path);
-            }
+            return $fileUploadStrategy->delete($path);
+        } catch (Throwable $e) {
+            throw $e;
         }
-
-        return $urls;
     }
 }

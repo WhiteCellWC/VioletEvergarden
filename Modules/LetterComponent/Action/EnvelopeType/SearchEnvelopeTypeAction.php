@@ -5,7 +5,7 @@ namespace Modules\LetterComponent\Action\EnvelopeType;
 use Throwable;
 use Illuminate\Http\Request;
 use Modules\LetterComponent\Contract\EnvelopeTypeServiceInterface;
-use Modules\LetterComponent\DTO\EnvelopeTypeDto;
+use Modules\LetterComponent\DTO\SearchEnvelopeTypeDto;
 use Modules\Shared\DTO\QueryOptionsDto;
 
 class SearchEnvelopeTypeAction
@@ -15,7 +15,7 @@ class SearchEnvelopeTypeAction
     public function handle(Request $request, array|string|null $relation = null)
     {
         try {
-            $condsIn = EnvelopeTypeDto::fromRequest($request)->toArray();
+            $condsIn = SearchEnvelopeTypeDto::fromRequest($request)->toArray();
 
             $queryOptions = QueryOptionsDto::fromRequest($request)->toArray();
 
