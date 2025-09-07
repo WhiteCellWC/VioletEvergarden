@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class PaperType extends Model
+class PaperType extends BaseModel
 {
     const table = 'paper_types';
 

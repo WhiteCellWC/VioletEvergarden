@@ -39,7 +39,7 @@ class FragranceTypeDto
             $request->name,
             $request->image,
             $request->description,
-            $request->isPremium,
+            $request->is_premium,
             $request->price,
             $request->discount,
             $request->status

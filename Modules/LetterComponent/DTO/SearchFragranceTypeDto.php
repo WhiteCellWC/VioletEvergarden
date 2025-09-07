@@ -9,7 +9,6 @@ class SearchFragranceTypeDto
 {
     public function __construct(
         public ?string $name,
-        public ?string $image,
         public ?string $description,
         public ?bool $isPremium,
         public ?float $price,
@@ -21,7 +20,6 @@ class SearchFragranceTypeDto
     {
         return [
             FragranceType::name => $this->name,
-            FragranceType::image => $this->image,
             FragranceType::description => $this->description,
             FragranceType::isPremium => $this->isPremium,
             FragranceType::price => $this->price,
@@ -34,9 +32,8 @@ class SearchFragranceTypeDto
     {
         return new self(
             $request->name,
-            $request->image,
             $request->description,
-            $request->isPremium,
+            $request->is_premium,
             $request->price,
             $request->discount,
             $request->status

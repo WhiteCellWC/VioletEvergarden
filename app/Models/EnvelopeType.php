@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class EnvelopeType extends Model
+class EnvelopeType extends BaseModel
 {
     public const table = 'envelope_types';
 
