@@ -10,8 +10,6 @@ class FragranceType extends BaseModel
 
     public const name = 'name';
 
-    public const image = 'image';
-
     public const description = 'description';
 
     public const isPremium = 'is_premium';
@@ -30,7 +28,6 @@ class FragranceType extends BaseModel
 
     protected $fillable = [
         'name',
-        'image',
         'description',
         'is_premium',
         'price',
@@ -50,6 +47,11 @@ class FragranceType extends BaseModel
     public function letters()
     {
         return $this->hasMany(Letter::class, Letter::fragranceTypeId);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(CoreImage::class, 'imageable');
     }
     #endregion
 }

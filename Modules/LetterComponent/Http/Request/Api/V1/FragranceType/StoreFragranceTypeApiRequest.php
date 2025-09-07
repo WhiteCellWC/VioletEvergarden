@@ -23,10 +23,11 @@ class StoreFragranceTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required|image',
+            'images' => 'required|array',
+            'images.*' => 'image',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
-            'price' => 'required|decimal:8,2',
+            'price' => 'required|numeric|min:0',
             'discount' => 'nullable|min:1|max:100',
             'status' => 'nullable|boolean'
         ];

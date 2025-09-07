@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Cache;
 use Modules\LetterComponent\DTO\FragranceTypeDto;
 use Modules\LetterComponent\Http\Cache\FragranceTypeCache;
 use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
+use Modules\Shared\Contract\CoreImageServiceInterface;
 
 class UpdateFragranceTypeAction
 {
-    public function __construct(protected FragranceTypeServiceInterface $fragranceTypeService) {}
+    public function __construct(
+        protected FragranceTypeServiceInterface $fragranceTypeService,
+        protected CoreImageServiceInterface $coreImageService
+    ) {}
 
     public function handle(Request $request, string $id)
     {
@@ -21,6 +25,14 @@ class UpdateFragranceTypeAction
             $fragranceTypeDto = FragranceTypeDto::fromRequest($request, $id);
 
             $fragranceType = $this->fragranceTypeService->update($fragranceTypeDto);
+
+            if ($fragranceTypeDto->images && count($fragranceTypeDto->images)) {
+                $this->coreImageService->attachImages($fragranceType, $fragranceTypeDto->images, '/Uploads/FragranceTypes');
+            }
+
+            if ($fragranceTypeDto->deleteImages && count($fragranceTypeDto->deleteImages)) {
+                $this->coreImageService->delete($fragranceTypeDto->deleteImages);
+            }
 
             Cache::tags([FragranceTypeCache::GET_ALL, FragranceTypeCache::GET . '_' . $id])->flush();
             DB::commit();

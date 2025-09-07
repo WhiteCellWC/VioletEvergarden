@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('fragrance_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
             $table->text('description');
             $table->boolean('is_premium')->default(false);
             $table->decimal('price');

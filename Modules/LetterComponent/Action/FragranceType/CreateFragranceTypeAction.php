@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\DB;
 use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
 use Modules\LetterComponent\DTO\FragranceTypeDto;
 use Modules\LetterComponent\Http\Cache\FragranceTypeCache;
+use Modules\Shared\Contract\CoreImageServiceInterface;
 use Throwable;
 
 class CreateFragranceTypeAction
 {
-    public function __construct(protected FragranceTypeServiceInterface $fragranceTypeService) {}
+    public function __construct(
+        protected FragranceTypeServiceInterface $fragranceTypeService,
+        protected CoreImageServiceInterface $coreImageService
+    ) {}
 
     public function handle(Request $request)
     {
@@ -21,6 +25,8 @@ class CreateFragranceTypeAction
             $fragranceTypeDto = FragranceTypeDto::fromRequest($request);
 
             $fragranceType = $this->fragranceTypeService->create($fragranceTypeDto);
+
+            $this->coreImageService->attachImages($fragranceType, $fragranceTypeDto->images, '/Uploads/FragranceTypes');
 
             Cache::tags([FragranceTypeCache::GET_ALL])->flush();
             DB::commit();

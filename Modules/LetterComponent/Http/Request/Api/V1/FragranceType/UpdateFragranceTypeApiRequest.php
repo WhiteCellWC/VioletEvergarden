@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Http\Request\Api\V1\FragranceType;
 
+use App\Models\CoreImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFragranceTypeApiRequest extends FormRequest
@@ -23,10 +24,13 @@ class UpdateFragranceTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'nullable|image',
+            'images' => 'nullable|array',
+            'images.*' => 'image',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:' . CoreImage::table . ',' . CoreImage::id,
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
-            'price' => 'required|decimal:8,2',
+            'price' => 'required|numeric|min:0',
             'discount' => 'nullable|min:1|max:100',
             'status' => 'nullable|boolean'
         ];

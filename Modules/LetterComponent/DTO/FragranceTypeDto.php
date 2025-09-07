@@ -10,11 +10,12 @@ class FragranceTypeDto
     public function __construct(
         public ?int $id,
         public string $name,
-        public string $image,
+        public array $images,
+        public ?array $deleteImages,
         public string $description,
         public bool $isPremium,
         public float $price,
-        public float $discount,
+        public ?float $discount,
         public bool $status
     ) {}
 
@@ -23,7 +24,6 @@ class FragranceTypeDto
         return [
             FragranceType::id => $this->id,
             FragranceType::name => $this->name,
-            FragranceType::image => $this->image,
             FragranceType::description => $this->description,
             FragranceType::isPremium => $this->isPremium,
             FragranceType::price => $this->price,
@@ -37,12 +37,13 @@ class FragranceTypeDto
         return new self(
             $id,
             $request->name,
-            $request->image,
+            $request->images ?? [],
+            $request->delete_images,
             $request->description,
-            $request->is_premium,
+            $request->is_premium ?? false,
             $request->price,
             $request->discount,
-            $request->status
+            $request->status ?? true
         );
     }
 }

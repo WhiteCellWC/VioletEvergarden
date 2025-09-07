@@ -18,13 +18,11 @@ class FragranceTypeService extends BaseService implements FragranceTypeServiceIn
             return Cache::tags([FragranceTypeCache::GET, FragranceTypeCache::GET . "_" . $id])->remember(
                 FragranceTypeCache::GET . "_" . $id,
                 FragranceTypeCache::GET_EXPIRY,
-                fn() => FragranceType::when(
-                    $id,
-                    fn($query, $id) => $query->where(FragranceType::id, $id)
-                )->when(
-                    $relation,
-                    fn($query, $relation) => $query->with($relation)
-                )->first()
+                fn() => FragranceType::query()
+                    ->when(
+                        $relation,
+                        fn($query, $relation) => $query->with($relation)
+                    )->findOrFail($id)
             );
         } catch (Exception $e) {
             throw $e;
@@ -85,10 +83,10 @@ class FragranceTypeService extends BaseService implements FragranceTypeServiceIn
         }
     }
 
-    public function delete(string $id)
+    public function delete(string|FragranceType $id)
     {
         try {
-            $fragranceType = $this->get($id);
+            $fragranceType = $id instanceof FragranceType ? $id : $this->get($id);
             $name = $fragranceType->{FragranceType::name};
             $fragranceType->delete();
 
