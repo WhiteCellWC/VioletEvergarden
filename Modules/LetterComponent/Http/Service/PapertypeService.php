@@ -85,10 +85,10 @@ class PapertypeService extends BaseService implements PaperTypeServiceInterface
         }
     }
 
-    public function delete(string $id)
+    public function delete(string|PaperType $id)
     {
         try {
-            $paperType = $this->get($id);
+            $paperType = $id instanceof PaperType ? $id : $this->get($id);
             $name = $paperType->{PaperType::name};
             $paperType->delete();
 

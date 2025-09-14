@@ -10,8 +10,6 @@ class PaperType extends BaseModel
 
     const name = 'name';
 
-    const image = 'image';
-
     const stock = 'stock';
 
     const gradient = 'gradient';
@@ -32,7 +30,6 @@ class PaperType extends BaseModel
 
     protected $fillable = [
         'name',
-        'image',
         'stock',
         'gradient',
         'price_per_page',
@@ -54,6 +51,11 @@ class PaperType extends BaseModel
     public function letterTemplates()
     {
         return $this->hasMany(LetterTemplate::class, LetterTemplate::paperTypeId);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(CoreImage::class, 'imageable');
     }
     #endregion
 }

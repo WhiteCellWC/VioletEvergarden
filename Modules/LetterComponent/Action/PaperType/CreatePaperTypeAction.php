@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\DB;
 use Modules\LetterComponent\Contract\PaperTypeServiceInterface;
 use Modules\LetterComponent\DTO\PaperTypeDto;
 use Modules\LetterComponent\Http\Cache\PaperTypeCache;
+use Modules\Shared\Contract\CoreImageServiceInterface;
 use Throwable;
 
 class CreatePaperTypeAction
 {
-    public function __construct(protected PaperTypeServiceInterface $paperTypeService) {}
+    public function __construct(
+        protected PaperTypeServiceInterface $paperTypeService,
+        protected CoreImageServiceInterface $coreImageService
+    ) {}
 
     public function handle(Request $request)
     {
@@ -21,6 +25,8 @@ class CreatePaperTypeAction
             $paperTypeDto = PaperTypeDto::fromRequest($request);
 
             $paperType = $this->paperTypeService->create($paperTypeDto);
+
+            $this->coreImageService->attachImages($paperType, $paperTypeDto->images, '/Uploads/PaperTypes');
 
             Cache::tags([PaperTypeCache::GET_ALL])->flush();
             DB::commit();

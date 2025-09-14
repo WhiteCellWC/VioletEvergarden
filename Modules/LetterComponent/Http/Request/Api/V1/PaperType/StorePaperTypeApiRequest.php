@@ -23,10 +23,11 @@ class StorePaperTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required|image',
+            'images' => 'required|array',
+            'images.*' => 'image',
             'stock' => 'required|integer|min:0',
             'gradient' => 'required',
-            'price_per_page' => 'required|decimal:8,2|min:0',
+            'price_per_page' => 'required|numeric|min:0',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
             'discount' => 'nullable|min:0|max:100',

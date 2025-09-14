@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Http\Request\Api\V1\PaperType;
 
+use App\Models\CoreImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePaperTypeApiRequest extends FormRequest
@@ -23,10 +24,13 @@ class UpdatePaperTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'nullable|image',
+            'images' => 'nullable|array',
+            'images.*' => 'image',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:' . CoreImage::table . ',' . CoreImage::id,
             'stock' => 'required|integer|min:0',
             'gradient' => 'required',
-            'price_per_page' => 'required|decimal:8,2|min:0',
+            'price_per_page' => 'required|numeric|min:0',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',
             'discount' => 'nullable|min:0|max:100',

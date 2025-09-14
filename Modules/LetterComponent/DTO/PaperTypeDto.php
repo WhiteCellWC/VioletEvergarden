@@ -10,7 +10,8 @@ class PaperTypeDto
     public function __construct(
         public ?int $id,
         public string $name,
-        public string $image,
+        public array $images,
+        public ?array $deleteImages,
         public int $stock,
         public string $gradient,
         public float $pricePerPage,
@@ -25,7 +26,6 @@ class PaperTypeDto
         return [
             PaperType::id => $this->id,
             PaperType::name => $this->name,
-            PaperType::image => $this->image,
             PaperType::stock => $this->stock,
             PaperType::gradient => $this->gradient,
             PaperType::pricePerPage => $this->pricePerPage,
@@ -41,14 +41,15 @@ class PaperTypeDto
         return new self(
             $id,
             $request->name,
-            $request->image,
+            $request->images ?? [],
+            $request->delete_images,
             $request->stock,
             $request->gradient,
             $request->price_per_page,
             $request->description,
-            $request->is_premium,
+            $request->is_premium ?? false,
             $request->discount,
-            $request->status
+            $request->status ?? true
         );
     }
 }

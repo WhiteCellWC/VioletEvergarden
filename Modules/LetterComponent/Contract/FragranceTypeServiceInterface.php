@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Contract;
 
+use App\Models\FragranceType;
 use Modules\LetterComponent\DTO\FragranceTypeDto;
 
 interface FragranceTypeServiceInterface
@@ -14,5 +15,5 @@ interface FragranceTypeServiceInterface
 
     public function update(FragranceTypeDto $fragranceTypeDto);
 
-    public function delete(string $id);
+    public function delete(string|FragranceType $id);
 }

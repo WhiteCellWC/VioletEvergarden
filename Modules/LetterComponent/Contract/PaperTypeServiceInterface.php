@@ -2,6 +2,7 @@
 
 namespace Modules\LetterComponent\Contract;
 
+use App\Models\PaperType;
 use Modules\LetterComponent\DTO\PaperTypeDto;
 
 interface PaperTypeServiceInterface
@@ -14,5 +15,5 @@ interface PaperTypeServiceInterface
 
     public function update(PaperTypeDto $fragranceTypeDto);
 
-    public function delete(string $id);
+    public function delete(string|PaperType $id);
 }

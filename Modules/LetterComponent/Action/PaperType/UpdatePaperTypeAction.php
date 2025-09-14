@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Cache;
 use Modules\LetterComponent\Contract\PaperTypeServiceInterface;
 use Modules\LetterComponent\DTO\PaperTypeDto;
 use Modules\LetterComponent\Http\Cache\PaperTypeCache;
+use Modules\Shared\Contract\CoreImageServiceInterface;
 
 class UpdatePaperTypeAction
 {
-    public function __construct(protected PaperTypeServiceInterface $paperTypeService) {}
+    public function __construct(
+        protected PaperTypeServiceInterface $paperTypeService,
+        protected CoreImageServiceInterface $coreImageService
+    ) {}
 
     public function handle(Request $request, string $id)
     {
@@ -21,6 +25,14 @@ class UpdatePaperTypeAction
             $paperTypeDto = PaperTypeDto::fromRequest($request, $id);
 
             $paperType = $this->paperTypeService->update($paperTypeDto);
+
+            if ($paperTypeDto->images && count($paperTypeDto->images)) {
+                $this->coreImageService->attachImages($paperType, $paperType->images, '/Uploads/PaperTypes');
+            }
+
+            if ($paperTypeDto->deleteImages && count($paperTypeDto->deleteImages)) {
+                $this->coreImageService->delete($paperTypeDto->deleteImages);
+            }
 
             Cache::tags([PaperTypeCache::GET_ALL, PaperTypeCache::GET . '_' . $id])->flush();
             DB::commit();

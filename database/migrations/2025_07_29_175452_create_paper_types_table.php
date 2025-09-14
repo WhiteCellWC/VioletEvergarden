@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('paper_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
             $table->bigInteger('stock');
             $table->string('gradient');
             $table->decimal('price_per_page');

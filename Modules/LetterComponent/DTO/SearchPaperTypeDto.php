@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class SearchPaperTypeDto
 {
     public function __construct(
-        public string $name,
-        public int $stock,
-        public string $gradient,
-        public float $pricePerPage,
-        public string $description,
+        public ?string $name,
+        public ?int $stock,
+        public ?string $gradient,
+        public ?float $pricePerPage,
+        public ?string $description,
         public ?bool $isPremium,
         public ?float $discount,
         public ?bool $status
