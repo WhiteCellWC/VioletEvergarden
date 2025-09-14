@@ -7,9 +7,11 @@ use Illuminate\Support\ServiceProvider;
 use Modules\LetterComponent\Contract\EnvelopeTypeServiceInterface;
 use Modules\LetterComponent\Contract\FragranceTypeServiceInterface;
 use Modules\LetterComponent\Contract\PaperTypeServiceInterface;
+use Modules\LetterComponent\Contract\WaxSealTypeServiceInterface;
 use Modules\LetterComponent\Http\Service\EnvelopeTypeService;
 use Modules\LetterComponent\Http\Service\FragranceTypeService;
-use Modules\LetterComponent\Http\Service\PapertypeService;
+use Modules\LetterComponent\Http\Service\PaperTypeService;
+use Modules\LetterComponent\Http\Service\WaxSealTypeService;
 
 class LetterComponentProvider extends ServiceProvider
 {
@@ -20,7 +22,8 @@ class LetterComponentProvider extends ServiceProvider
     {
         $this->app->bind(FragranceTypeServiceInterface::class, FragranceTypeService::class);
         $this->app->bind(EnvelopeTypeServiceInterface::class, EnvelopeTypeService::class);
-        $this->app->bind(PaperTypeServiceInterface::class, PapertypeService::class);
+        $this->app->bind(PaperTypeServiceInterface::class, PaperTypeService::class);
+        $this->app->bind(WaxSealTypeServiceInterface::class, WaxSealTypeService::class);
     }
 
     /**

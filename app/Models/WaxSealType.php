@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class WaxSealType extends Model
+class WaxSealType extends BaseModel
 {
     const table = 'wax_seal_types';
 
@@ -13,8 +12,6 @@ class WaxSealType extends Model
     const userId = 'user_id';
 
     const name = 'name';
-
-    const image = 'image';
 
     const color = 'color';
 
@@ -37,7 +34,6 @@ class WaxSealType extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'image',
         'color',
         'is_custom',
         'price',
@@ -63,6 +59,11 @@ class WaxSealType extends Model
     public function user()
     {
         return $this->belongsTo(User::class, WaxSealType::userId);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(CoreImage::class, 'imageable');
     }
     #endregion
 }

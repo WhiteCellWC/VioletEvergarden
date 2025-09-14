@@ -3,24 +3,24 @@
 namespace Modules\LetterComponent\Http\Service;
 
 use App\Http\Service\BaseService;
-use App\Models\PaperType;
+use App\Models\WaxSealType;
 use Exception;
 use Illuminate\Support\Facades\Cache;
-use Modules\LetterComponent\Contract\PaperTypeServiceInterface;
-use Modules\LetterComponent\DTO\PaperTypeDto;
-use Modules\LetterComponent\Http\Cache\PaperTypeCache;
+use Modules\LetterComponent\Contract\WaxSealTypeServiceInterface;
+use Modules\LetterComponent\DTO\WaxSealTypeDto;
+use Modules\LetterComponent\Http\Cache\WaxSealTypeCache;
 
-class PaperTypeService extends BaseService implements PaperTypeServiceInterface
+class WaxSealTypeService extends BaseService implements WaxSealTypeServiceInterface
 {
     public function get(string $id, string|array|null $relation = null)
     {
         try {
-            return Cache::tags([PaperTypeCache::GET, PaperTypeCache::GET . "_" . $id])->remember(
-                PaperTypeCache::GET . "_" . $id,
-                PaperTypeCache::GET_EXPIRY,
-                fn() => PaperType::when(
+            return Cache::tags([WaxSealTypeCache::GET, WaxSealTypeCache::GET . "_" . $id])->remember(
+                WaxSealTypeCache::GET . "_" . $id,
+                WaxSealTypeCache::GET_EXPIRY,
+                fn() => WaxSealType::when(
                     $id,
-                    fn($query, $id) => $query->where(PaperType::id, $id)
+                    fn($query, $id) => $query->where(WaxSealType::id, $id)
                 )->when(
                     $relation,
                     fn($query, $relation) => $query->with($relation)
@@ -34,18 +34,18 @@ class PaperTypeService extends BaseService implements PaperTypeServiceInterface
     public function getAll(string|array|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null)
     {
         try {
-            $cacheKey = PaperTypeCache::GET_ALL . ':' . md5(json_encode([
+            $cacheKey = WaxSealTypeCache::GET_ALL . ':' . md5(json_encode([
                 'relation' => $relation,
                 'condsIn'   => $condsIn,
                 'condsNotIn' => $condsNotIn,
                 'queryOptions' => $queryOptions
             ]));
 
-            return Cache::tags([PaperTypeCache::GET_ALL])->remember(
+            return Cache::tags([WaxSealTypeCache::GET_ALL])->remember(
                 $cacheKey,
-                PaperTypeCache::GET_EXPIRY,
+                WaxSealTypeCache::GET_EXPIRY,
                 fn() => $this->fetch(
-                    PaperType::when(
+                    WaxSealType::when(
                         $condsIn,
                         fn($query, $condsIn) => $query->condsInByColumns($condsIn)
                     )->when(
@@ -63,34 +63,34 @@ class PaperTypeService extends BaseService implements PaperTypeServiceInterface
         }
     }
 
-    public function create(PaperTypeDto $paperTypeDto)
+    public function create(WaxSealTypeDto $waxSealTypeDto)
     {
         try {
-            return PaperType::create($paperTypeDto->toArray());
+            return WaxSealType::create($waxSealTypeDto->toArray());
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function update(PaperTypeDto $paperTypeDto)
+    public function update(WaxSealTypeDto $waxSealTypeDto)
     {
         try {
-            $paperType = $this->get($paperTypeDto->id);
-            $paperType->fill($paperTypeDto->toArray());
-            $paperType->save();
+            $waxSealType = $this->get($waxSealTypeDto->id);
+            $waxSealType->fill($waxSealTypeDto->toArray());
+            $waxSealType->save();
 
-            return $paperType;
+            return $waxSealType;
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function delete(string|PaperType $id)
+    public function delete(string|WaxSealType $id)
     {
         try {
-            $paperType = $id instanceof PaperType ? $id : $this->get($id);
-            $name = $paperType->{PaperType::name};
-            $paperType->delete();
+            $waxSealType = $id instanceof WaxSealType ? $id : $this->get($id);
+            $name = $waxSealType->{WaxSealType::name};
+            $waxSealType->delete();
 
             return $name;
         } catch (Exception $e) {
