@@ -27,7 +27,7 @@ class UpdatePaperTypeAction
             $paperType = $this->paperTypeService->update($paperTypeDto);
 
             if ($paperTypeDto->images && count($paperTypeDto->images)) {
-                $this->coreImageService->attachImages($paperType, $paperType->images, '/Uploads/PaperTypes');
+                $this->coreImageService->attachImages($paperType, $paperTypeDto->images, '/Uploads/PaperTypes');
             }
 
             if ($paperTypeDto->deleteImages && count($paperTypeDto->deleteImages)) {
