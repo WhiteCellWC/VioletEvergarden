@@ -20,7 +20,7 @@ readonly class QueryOptionsDto
 
     public function __construct(
         public ?string $orderBy,
-        public ?OrderType $orderType,
+        public ?string $orderType,
         public ?int $offset,
         public ?int $limit,
         public ?bool $noPagination,
@@ -43,7 +43,7 @@ readonly class QueryOptionsDto
     {
         return new self(
             $request->order_by,
-            $request->order_type,
+            $request->order_type ? OrderType::from($request->order_type)->value : null,
             $request->offset,
             $request->limit,
             $request->no_pagination,

@@ -2,35 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class LetterTemplate extends Model
+class LetterTemplate extends BaseModel
 {
-    const table = 'letter_templates';
+    public const table = 'letter_templates';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const name = 'name';
+    public const name = 'name';
 
-    const description = 'description';
+    public const description = 'description';
 
-    const sendType = 'send_type';
+    public const sendType = 'send_type';
 
-    const paperTypeId = 'paper_type_id';
+    public const paperTypeId = 'paper_type_id';
 
-    const fragranceTypeId = 'fragrance_type_id';
+    public const fragranceTypeId = 'fragrance_type_id';
 
-    const envelopeTypeId = 'envelope_type_id';
+    public const envelopeTypeId = 'envelope_type_id';
 
-    const waxSealTypeId = 'wax_seal_type_id';
+    public const waxSealTypeId = 'wax_seal_type_id';
 
-    const status = 'status';
+    public const status = 'status';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
 
     protected $fillable = [
         'name',

@@ -30,7 +30,7 @@ class SearchEnvelopeTypeDto
         ];
     }
 
-    public static function fromRequest(Request $request, $id = null)
+    public static function fromRequest(Request $request)
     {
         return new self(
             $request->name,

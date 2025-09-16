@@ -9,4 +9,8 @@ class Constant
     public const descending = 'desc';
 
     public const ascending = 'asc';
+
+    public const physical = 'physical';
+
+    public const digital = 'digital';
 }

@@ -1,0 +1,98 @@
+<?php
+
+namespace Modules\Letter\Http\Service;
+
+use App\Http\Service\BaseService;
+use App\Models\LetterTemplate;
+use Exception;
+use Illuminate\Support\Facades\Cache;
+use Modules\Letter\Contract\LetterTemplateServiceInterface;
+use Modules\Letter\DTO\LetterTemplateDto;
+use Modules\Letter\Http\Cache\LetterTemplateCache;
+
+class LetterTemplateService extends BaseService implements LetterTemplateServiceInterface
+{
+    public function get(string $id, string|array|null $relation = null)
+    {
+        try {
+            return Cache::tags([LetterTemplateCache::GET, LetterTemplateCache::GET . "_" . $id])->remember(
+                LetterTemplateCache::GET . "_" . $id,
+                LetterTemplateCache::GET_EXPIRY,
+                fn() => LetterTemplate::query()
+                    ->when(
+                        $relation,
+                        fn($query, $relation) => $query->with($relation)
+                    )->findOrFail($id)
+            );
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function getAll(string|array|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null)
+    {
+        try {
+            $cacheKey = LetterTemplateCache::GET_ALL . ':' . md5(json_encode([
+                'relation' => $relation,
+                'condsIn'   => $condsIn,
+                'condsNotIn' => $condsNotIn,
+                'queryOptions' => $queryOptions
+            ]));
+
+            return Cache::tags([LetterTemplateCache::GET_ALL])->remember(
+                $cacheKey,
+                LetterTemplateCache::GET_EXPIRY,
+                fn() => $this->fetch(
+                    LetterTemplate::when(
+                        $condsIn,
+                        fn($query, $condsIn) => $query->condsInByColumns($condsIn)
+                    )->when(
+                        $condsNotIn,
+                        fn($query, $condsNotIn) => $query->condsNotInByColumns($condsNotIn)
+                    )->when(
+                        $queryOptions,
+                        fn($query, $queryOptions) => $query->queryOptions($queryOptions)
+                    ),
+                    $queryOptions
+                )
+            );
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function create(LetterTemplateDto $letterTemplateDto)
+    {
+        try {
+            return LetterTemplate::create($letterTemplateDto->toArray());
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function update(LetterTemplateDto $letterTemplateDto)
+    {
+        try {
+            $envelopeType = $this->get($letterTemplateDto->id);
+            $envelopeType->fill($letterTemplateDto->toArray());
+            $envelopeType->save();
+
+            return $envelopeType;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function delete(string|LetterTemplate $id)
+    {
+        try {
+            $envelopeType = $id instanceof LetterTemplate ? $id : $this->get($id);
+            $name = $envelopeType->{LetterTemplate::name};
+            $envelopeType->delete();
+
+            return $name;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+}

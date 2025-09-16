@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 class SearchWaxSealTypeDto
 {
     public function __construct(
-        public ?int $id,
         public ?int $userId,
         public ?string $name,
         public ?string $color,
@@ -22,7 +21,6 @@ class SearchWaxSealTypeDto
     public function toArray()
     {
         return [
-            WaxSealType::id => $this->id,
             WaxSealType::userId => $this->userId,
             WaxSealType::name => $this->name,
             WaxSealType::color => $this->color,
@@ -34,10 +32,9 @@ class SearchWaxSealTypeDto
         ];
     }
 
-    public static function fromRequest(Request $request, $id = null)
+    public static function fromRequest(Request $request)
     {
         return new self(
-            $id,
             $request->user_id,
             $request->name,
             $request->color,

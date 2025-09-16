@@ -20,9 +20,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->enum('send_type', ['send-type-1', 'send-type-2', 'send-type-3']);
+            $table->enum('send_type', ['physical', 'digital']);
             $table->foreignId('paper_type_id')->constrained(PaperType::table);
-            $table->foreignId('fragrance_type_id')->constrained(FragranceType::table);
+            $table->foreignId('fragrance_type_id')->nullable()->constrained(FragranceType::table);
             $table->foreignId('envelope_type_id')->constrained(EnvelopeType::table);
             $table->foreignId('wax_seal_type_id')->constrained(WaxSealType::table);
             $table->boolean('status')->default(true);

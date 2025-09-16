@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('body');
             $table->enum('send_type', ['send-type-1', 'send-type-2']);
             $table->foreignId('paper_type_id')->constrained(PaperType::table);
-            $table->foreignId('fragrance_type_id')->constrained(FragranceType::table);
+            $table->foreignId('fragrance_type_id')->nullable()->constrained(FragranceType::table);
             $table->foreignId('envelope_type_id')->constrained(EnvelopeType::table);
             $table->foreignId('wax_seal_type_id')->constrained(WaxSealType::table);
             $table->boolean('is_draft')->default(true);
