@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letter_templates_letter_types', function (Blueprint $table) {
+        Schema::create('letter_template_letter_type', function (Blueprint $table) {
             $table->id();
             $table->foreignId('letter_template_id')->constrained(LetterTemplate::table);
             $table->foreignId('letter_type_id')->constrained(LetterType::table);
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('letter_templates_letter_types');
+        Schema::dropIfExists('letter_template_letter_type');
     }
 };

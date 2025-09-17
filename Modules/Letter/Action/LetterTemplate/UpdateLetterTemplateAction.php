@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Cache;
 use Modules\Letter\Contract\LetterTemplateServiceInterface;
 use Modules\Letter\DTO\LetterTemplateDto;
 use Modules\Letter\Http\Cache\LetterTemplateCache;
+use Modules\Letter\Contract\LetterTypeServiceInterface;
+use App\Models\LetterTemplate;
 
 class UpdateLetterTemplateAction
 {
     public function __construct(
         protected LetterTemplateServiceInterface $letterTemplateServiceInterface,
+        protected LetterTypeServiceInterface $letterTypeService
     ) {}
 
     public function handle(Request $request, string $id)
@@ -23,6 +26,12 @@ class UpdateLetterTemplateAction
             $letterTemplateDto = LetterTemplateDto::fromRequest($request, $id);
 
             $letterTemplate = $this->letterTemplateServiceInterface->update($letterTemplateDto);
+
+            if ($letterTemplateDto->letterTypeIds) {
+                $this->letterTypeService->attachLetterTypes($letterTemplate, LetterTemplate::letterTypes, $letterTemplateDto->letterTypeIds);
+            } else {
+                $this->letterTypeService->detachLetterTypes($letterTemplate, LetterTemplate::letterTypes);
+            }
 
             Cache::tags([LetterTemplateCache::GET_ALL, LetterTemplateCache::GET . '_' . $id])->flush();
             DB::commit();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 class LetterTemplate extends BaseModel
 {
+    // Table Column Start
     public const table = 'letter_templates';
 
     public const id = 'id';
@@ -29,6 +30,11 @@ class LetterTemplate extends BaseModel
     public const createdBy = 'created_by';
 
     public const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const letterTypes = 'letterTypes';
+    // Relation End
 
     protected $fillable = [
         'name',

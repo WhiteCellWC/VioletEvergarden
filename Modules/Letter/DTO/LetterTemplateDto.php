@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class LetterTemplateDto
 {
     public function __construct(
+        //Letter Template
         public ?int $id,
         public string $name,
         public string $description,
@@ -17,7 +18,10 @@ class LetterTemplateDto
         public ?int $fragranceTypeId,
         public int $envelopeTypeId,
         public int $waxSealTypeId,
-        public bool $status
+        public ?bool $status,
+
+        //Letter Type
+        public ?array $letterTypeIds
     ) {}
 
     public function toArray()
@@ -38,6 +42,7 @@ class LetterTemplateDto
     public static function fromRequest(Request $request, $id = null)
     {
         return new self(
+            //Letter Template
             $id,
             $request->name,
             $request->description,
@@ -46,7 +51,10 @@ class LetterTemplateDto
             $request->fragrance_type_id,
             $request->envelope_type_id,
             $request->wax_seal_type_id,
-            $request->status ?? true
+            $request->status ?? true,
+
+            // Letter Type
+            $request->letter_type_ids
         );
     }
 }
