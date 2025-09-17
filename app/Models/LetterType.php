@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class LetterType extends Model
+class LetterType extends BaseModel
 {
-    const table = 'letter_types';
+    public const table = 'letter_types';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const name = 'name';
+    public const name = 'name';
 
-    const status = 'status';
+    public const status = 'status';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
+
     protected $fillable = [
         'name',
         'status',
