@@ -4,39 +4,46 @@ namespace App\Models;
 
 class Letter extends BaseModel
 {
-    const table = 'letters';
+    // Table Column Start
+    public const table = 'letters';
 
-    const id = 'id';
+    public const id = 'id';
 
-    const userId = 'user_id';
+    public const userId = 'user_id';
 
-    const title = 'title';
+    public const title = 'title';
 
-    const body = 'body';
+    public const body = 'body';
 
-    const sendType = 'send_type';
+    public const sendType = 'send_type';
 
-    const paperTypeId = 'paper_type_id';
+    public const paperTypeId = 'paper_type_id';
 
-    const fragranceTypeId = 'fragrance_type_id';
+    public const fragranceTypeId = 'fragrance_type_id';
 
-    const envelopeTypeId = 'envelope_type_id';
+    public const envelopeTypeId = 'envelope_type_id';
 
-    const waxSealTypeId = 'wax_seal_type_id';
+    public const waxSealTypeId = 'wax_seal_type_id';
 
-    const isDraft = 'is_draft';
+    public const isDraft = 'is_draft';
 
-    const isSent = 'is_sent';
+    public const isSent = 'is_sent';
 
-    const isSealed = 'is_sealed';
+    public const isSealed = 'is_sealed';
 
-    const isPrinted = 'is_printed';
+    public const isPrinted = 'is_printed';
 
-    const version = 'version';
+    public const version = 'version';
 
-    const createdBy = 'created_by';
+    public const createdBy = 'created_by';
 
-    const updatedBy = 'updated_by';
+    public const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const letterTypes = 'letterTypes';
+    // Relation End
+
     protected $fillable = [
         'user_id',
         'title',

@@ -5,6 +5,7 @@ namespace Modules\Letter\Http\Request\Api\Letter;
 use App\Enums\SendType;
 use App\Models\EnvelopeType;
 use App\Models\FragranceType;
+use App\Models\LetterType;
 use App\Models\PaperType;
 use App\Models\User;
 use App\Models\WaxSealType;
@@ -28,7 +29,7 @@ class UpdateLetterApiRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $letterValidations = [
             'user_id' => 'required|exists:' . User::table . ',' . User::id,
             'title' => 'required',
             'body' => 'required',
@@ -42,5 +43,12 @@ class UpdateLetterApiRequest extends FormRequest
             'is_sealed' => 'nullable|boolean',
             'is_printed' => 'nullable|boolean',
         ];
+
+        $letterTypeValidation = [
+            'letter_type_ids' => 'nullable|array',
+            'letter_type_ids.*' => 'exists:' . LetterType::table . ',' . LetterType::id
+        ];
+
+        return array_merge($letterValidations, $letterTypeValidation);
     }
 }

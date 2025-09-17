@@ -3,6 +3,8 @@
 namespace Modules\Letter\Contract;
 
 use App\Models\LetterType;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Modules\Letter\DTO\LetterTypeDto;
 
 interface LetterTypeServiceInterface
@@ -16,4 +18,8 @@ interface LetterTypeServiceInterface
     public function update(LetterTypeDto $letterTemplateDto);
 
     public function delete(string|LetterType $id);
+
+    public function attachLetterTypes(Model $model, string $letterTypeRelationName, array|Collection|int $ids);
+
+    public function detachLetterTypes(Model $model, string $letterTypeRelationName);
 }

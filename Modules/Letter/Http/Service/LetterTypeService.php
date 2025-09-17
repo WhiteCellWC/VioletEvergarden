@@ -5,6 +5,8 @@ namespace Modules\Letter\Http\Service;
 use App\Http\Service\BaseService;
 use App\Models\LetterType;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Modules\Letter\Contract\LetterTypeServiceInterface;
 use Modules\Letter\DTO\LetterTypeDto;
@@ -91,6 +93,24 @@ class LetterTypeService extends BaseService implements LetterTypeServiceInterfac
             $letterType->delete();
 
             return $title;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function attachLetterTypes(Model $model, string $letterTypeRelationName, array|Collection|int $ids)
+    {
+        try {
+            return $model->{$letterTypeRelationName}()->sync($ids);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function detachLetterTypes(Model $model, string $letterTypeRelationName)
+    {
+        try {
+            return $model->{$letterTypeRelationName}()->detach();
         } catch (Exception $e) {
             throw $e;
         }

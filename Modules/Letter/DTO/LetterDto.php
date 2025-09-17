@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class LetterDto
 {
     public function __construct(
+        //Letter
         public ?int $id,
         public int $userId,
         public string $title,
@@ -21,7 +22,10 @@ class LetterDto
         public ?bool $isDraft,
         public ?bool $isSent,
         public ?bool $isSealed,
-        public ?bool $isPrinted
+        public ?bool $isPrinted,
+
+        //Letter Type
+        public ?array $letterTypeIds
     ) {}
 
     public function toArray()
@@ -46,6 +50,7 @@ class LetterDto
     public static function fromRequest(Request $request, $id = null)
     {
         return new self(
+            // Letter
             $id,
             $request->user_id,
             $request->title,
@@ -59,6 +64,9 @@ class LetterDto
             $request->is_sent ?? false,
             $request->is_sealed,
             $request->is_printed ?? false,
+
+            // Letter Type
+            $request->letter_type_ids
         );
     }
 }
