@@ -3,22 +3,22 @@
 namespace Modules\Letter\Http\Service;
 
 use App\Http\Service\BaseService;
-use App\Models\LetterTemplate;
+use App\Models\Letter;
 use Exception;
 use Illuminate\Support\Facades\Cache;
-use Modules\Letter\Contract\LetterTemplateServiceInterface;
-use Modules\Letter\DTO\LetterTemplateDto;
-use Modules\Letter\Http\Cache\LetterTemplateCache;
+use Modules\Letter\Contract\LetterServiceInterface;
+use Modules\Letter\DTO\LetterDto;
+use Modules\Letter\Http\Cache\LetterCache;
 
-class LetterTemplateService extends BaseService implements LetterTemplateServiceInterface
+class LetterService extends BaseService implements LetterServiceInterface
 {
     public function get(string $id, string|array|null $relation = null)
     {
         try {
-            return Cache::tags([LetterTemplateCache::GET, LetterTemplateCache::GET . "_" . $id])->remember(
-                LetterTemplateCache::GET . "_" . $id,
-                LetterTemplateCache::GET_EXPIRY,
-                fn() => LetterTemplate::query()
+            return Cache::tags([LetterCache::GET, LetterCache::GET . "_" . $id])->remember(
+                LetterCache::GET . "_" . $id,
+                LetterCache::GET_EXPIRY,
+                fn() => Letter::query()
                     ->when(
                         $relation,
                         fn($query, $relation) => $query->with($relation)
@@ -32,18 +32,18 @@ class LetterTemplateService extends BaseService implements LetterTemplateService
     public function getAll(string|array|null $relation = null, ?array $condsIn = null, ?array $condsNotIn = null, ?array $queryOptions = null)
     {
         try {
-            $cacheKey = LetterTemplateCache::GET_ALL . ':' . md5(json_encode([
+            $cacheKey = LetterCache::GET_ALL . ':' . md5(json_encode([
                 'relation' => $relation,
                 'condsIn'   => $condsIn,
                 'condsNotIn' => $condsNotIn,
                 'queryOptions' => $queryOptions
             ]));
 
-            return Cache::tags([LetterTemplateCache::GET_ALL])->remember(
+            return Cache::tags([LetterCache::GET_ALL])->remember(
                 $cacheKey,
-                LetterTemplateCache::GET_EXPIRY,
+                LetterCache::GET_EXPIRY,
                 fn() => $this->fetch(
-                    LetterTemplate::when(
+                    Letter::when(
                         $condsIn,
                         fn($query, $condsIn) => $query->condsInByColumns($condsIn)
                     )->when(
@@ -61,36 +61,36 @@ class LetterTemplateService extends BaseService implements LetterTemplateService
         }
     }
 
-    public function create(LetterTemplateDto $letterTemplateDto)
+    public function create(LetterDto $letterDto)
     {
         try {
-            return LetterTemplate::create($letterTemplateDto->toArray());
+            return Letter::create($letterDto->toArray());
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function update(LetterTemplateDto $letterTemplateDto)
+    public function update(LetterDto $letterDto)
     {
         try {
-            $letterTemplate = $this->get($letterTemplateDto->id);
-            $letterTemplate->fill($letterTemplateDto->toArray());
-            $letterTemplate->save();
+            $letter = $this->get($letterDto->id);
+            $letter->fill($letterDto->toArray());
+            $letter->save();
 
-            return $letterTemplate;
+            return $letter;
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function delete(string|LetterTemplate $id)
+    public function delete(string|Letter $id)
     {
         try {
-            $letterTemplate = $id instanceof LetterTemplate ? $id : $this->get($id);
-            $name = $letterTemplate->{LetterTemplate::name};
-            $letterTemplate->delete();
+            $letter = $id instanceof Letter ? $id : $this->get($id);
+            $title = $letter->{Letter::title};
+            $letter->delete();
 
-            return $name;
+            return $title;
         } catch (Exception $e) {
             throw $e;
         }

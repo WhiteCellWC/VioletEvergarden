@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained(User::table);
             $table->string('title');
             $table->text('body');
-            $table->enum('send_type', ['send-type-1', 'send-type-2']);
+            $table->enum('send_type', ['physical', 'digital']);
             $table->foreignId('paper_type_id')->constrained(PaperType::table);
             $table->foreignId('fragrance_type_id')->nullable()->constrained(FragranceType::table);
             $table->foreignId('envelope_type_id')->constrained(EnvelopeType::table);

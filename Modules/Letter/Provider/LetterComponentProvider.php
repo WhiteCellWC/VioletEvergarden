@@ -4,7 +4,9 @@ namespace Modules\Letter\Provider;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Modules\Letter\Contract\LetterServiceInterface;
 use Modules\Letter\Contract\LetterTemplateServiceInterface;
+use Modules\Letter\Http\Service\LetterService;
 use Modules\Letter\Http\Service\LetterTemplateService;
 
 class LetterComponentProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class LetterComponentProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(LetterTemplateServiceInterface::class, LetterTemplateService::class);
+        $this->app->bind(LetterServiceInterface::class, LetterService::class);
     }
 
     /**

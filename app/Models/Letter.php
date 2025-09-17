@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Letter extends Model
+class Letter extends BaseModel
 {
     const table = 'letters';
 
