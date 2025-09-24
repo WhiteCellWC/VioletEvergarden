@@ -9,14 +9,12 @@ class BaseService
     protected function fetch($query, ?array $queryOptions)
     {
         $noPagination = $queryOptions[QueryOptionsDto::noPagination] ?? false;
-        $perPage      = $queryOptions[QueryOptionsDto::pagPerPage] ?? null;
+        $perPage      = $queryOptions[QueryOptionsDto::pagPerPage] ?? 10;
 
         if ($noPagination) {
             return $query->get();
         }
 
-        return $perPage
-            ? $query->paginate($perPage)->withQueryString()
-            : $query->get();
+        return $query->paginate($perPage)->withQueryString();
     }
 }

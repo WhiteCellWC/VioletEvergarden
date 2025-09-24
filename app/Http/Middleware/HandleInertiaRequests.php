@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Constant\Constant;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -37,7 +38,9 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'flash' => [
+                'status' => fn() => $request->session()->get(Constant::status),
+            ],
         ];
     }
 }

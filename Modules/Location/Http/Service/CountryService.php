@@ -44,6 +44,7 @@ class CountryService extends BaseService implements CountryServiceInterface
                 'condsIn'   => $condsIn,
                 'condsNotIn' => $condsNotIn,
                 'queryOptions'   => $queryOptions,
+                'routeType' => request()->is('api/*') ? 'api' : 'web'
             ]));
 
             return Cache::tags([CountryCache::GET_ALL])->remember(

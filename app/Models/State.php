@@ -4,6 +4,7 @@ namespace App\Models;
 
 class State extends BaseModel
 {
+    // Table Column Start
     public const table = 'states';
 
     public const id = 'id';
@@ -17,6 +18,11 @@ class State extends BaseModel
     public const createdBy = 'created_by';
 
     public const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const country = 'country';
+    // Relation End
 
     protected $fillable = [
         'name',

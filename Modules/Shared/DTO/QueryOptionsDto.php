@@ -18,6 +18,8 @@ readonly class QueryOptionsDto
 
     public const pagPerPage = 'pagPerPage';
 
+    public const page = 'page';
+
     public function __construct(
         public ?string $orderBy,
         public ?string $orderType,
@@ -25,6 +27,7 @@ readonly class QueryOptionsDto
         public ?int $limit,
         public ?bool $noPagination,
         public ?int $pagPerPage,
+        public ?int $page,
     ) {}
 
     public function toArray()
@@ -35,7 +38,8 @@ readonly class QueryOptionsDto
             self::offset => $this->offset,
             self::limit => $this->limit,
             self::noPagination => $this->noPagination,
-            self::pagPerPage => $this->pagPerPage
+            self::pagPerPage => $this->pagPerPage,
+            self::page => $this->page
         ];
     }
 
@@ -48,6 +52,7 @@ readonly class QueryOptionsDto
             $request->limit,
             $request->no_pagination,
             $request->pag_per_page,
+            $request->page
         );
     }
 }
