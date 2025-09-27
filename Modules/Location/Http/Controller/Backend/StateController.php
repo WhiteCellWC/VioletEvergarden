@@ -9,8 +9,12 @@ use App\Models\State;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Modules\Location\Action\State\CreateStateAction;
+use Modules\Location\Action\State\DeleteStateAction;
 use Modules\Location\Action\State\SearchStateAction;
+use Modules\Location\Action\State\UpdateStateAction;
+use Modules\Location\Contract\StateServiceInterface;
 use Modules\Location\Http\Request\Backend\State\StoreStateRequest;
+use Modules\Location\Http\Request\Backend\State\UpdateStateRequest;
 use Modules\Location\Http\Resource\Backend\StateBackendResource;
 use Throwable;
 
@@ -18,7 +22,10 @@ class StateController extends Controller
 {
     public function __construct(
         protected SearchStateAction $searchStateAction,
-        protected CreateStateAction $createStateAction
+        protected CreateStateAction $createStateAction,
+        protected UpdateStateAction $updateStateAction,
+        protected DeleteStateAction $deleteStateAction,
+        protected StateServiceInterface $stateService,
     ) {}
 
     public const parentPath = 'State';
@@ -86,15 +93,29 @@ class StateController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $state = $this->stateService->get($id, [State::country]);
+
+            return Inertia::render(self::editPath, [
+                'state' => new StateBackendResource($state)
+            ]);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateStateRequest $request, string $id)
     {
-        //
+        try {
+            $this->updateStateAction->handle($request, $id);
+
+            return redirectView('states.index', 'State updated successfully!', FlagType::SUCCESS);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
@@ -102,6 +123,12 @@ class StateController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $name = $this->deleteStateAction->handle($id);
+
+            return redirectView('states.index', "$name deleted successfully!", FlagType::SUCCESS);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 }

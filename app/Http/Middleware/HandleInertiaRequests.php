@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Constant\Constant;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -41,6 +42,12 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'status' => fn() => $request->session()->get(Constant::status),
             ],
+            'ziggy' => function () use ($request) {
+                return array_merge((new Ziggy)->toArray(), [
+                    'location' => $request->url(),
+                    'query' => $request->query(),
+                ]);
+            },
         ];
     }
 }

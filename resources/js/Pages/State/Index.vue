@@ -1,5 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import Table from '@/Components/Table/Table.vue';
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js';
 
@@ -14,8 +15,25 @@ const props = defineProps({
             meta: {},
         })
     }
-})
+});
 
+//Ref
+const columns = [
+    {
+        label: 'Name',
+        field: 'name',
+        sortable: true
+    },
+    {
+        label: 'Country',
+        field: row => row.country?.name,
+    },
+    {
+        label: 'Created At',
+        field: 'created_at',
+        sortable: true
+    }
+];
 </script>
 
 <template>
@@ -38,46 +56,16 @@ const props = defineProps({
             </div>
 
             <div class="p-4">
-                <div class="flex">
-                    <div>
-                        <label>Show:</label>
-                    </div>
-                </div>
-                <div class="overflow-auto rounded-lg border border-gray-300 dark:border-gray-700">
-                    <table class="w-full">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
-                            <tr>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">ID</th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Name</th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Country
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Created
-                                    At
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(state, i) in states.data" :key="state.id"
-                                class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ i +
-                                    states.meta?.from
-                                }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ state.name }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{
-                                    state.country.name }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ state.created_at
-                                }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <Table :resource="props.states" :columns="columns" :windowSize="1">
+                    <template #actions="{ row }">
+                        <Link :href="route('states.edit', row.id)">
+                        <FontAwesomeIcon :icon="['fas', 'pen-to-square']" class="text-blue-500 me-2" />
+                        </Link>
+                        <Link :href="route('states.destroy', row.id)" method="delete" class="">
+                        <FontAwesomeIcon :icon="['fas', 'trash']" class="text-red-500" />
+                        </Link>
+                    </template>
+                </Table>
             </div>
         </template>
     </AdminLayout>

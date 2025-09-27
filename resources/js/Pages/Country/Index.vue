@@ -1,5 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import Table from '../../Components/Table/Table.vue';
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js';
 
@@ -15,6 +16,30 @@ const props = defineProps({
         })
     }
 })
+
+//Ref
+const columns = [
+    {
+        label: 'Name',
+        field: 'name',
+        sort: true
+    },
+    {
+        label: 'ISO Code',
+        field: 'iso_code',
+        sort: true
+    },
+    {
+        label: 'Phone Code',
+        field: 'phone_code',
+        sort: true
+    },
+    {
+        label: 'Created At',
+        field: 'created_at',
+        sort: true
+    },
+]
 
 </script>
 
@@ -38,53 +63,16 @@ const props = defineProps({
             </div>
 
             <div class="p-4">
-                <div class="flex">
-                    <div>
-                        <label>Show:</label>
-                    </div>
-                </div>
-                <div class="overflow-auto rounded-lg border border-gray-300 dark:border-gray-700">
-                    <table class="w-full">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
-                            <tr>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">ID</th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Name</th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">ISO Code
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Phone
-                                    Code
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Created
-                                    At
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(country, i) in countries.data" :key="country.id"
-                                class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ i +
-                                    countries.meta?.from
-                                    }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ country.name }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{
-                                    country.iso_code }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{
-                                    country.phone_code }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{
-                                    country.created_at
-                                    }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <Table :resource="props.countries" :columns="columns" :windowSize="1">
+                    <template #actions="{ row }">
+                        <Link :href="route('countries.edit', row.id)">
+                        <FontAwesomeIcon :icon="['fas', 'pen-to-square']" class="text-blue-500 me-2" />
+                        </Link>
+                        <Link :href="route('countries.destroy', row.id)" method="delete" class="">
+                        <FontAwesomeIcon :icon="['fas', 'trash']" class="text-red-500" />
+                        </Link>
+                    </template>
+                </Table>
             </div>
         </template>
     </AdminLayout>

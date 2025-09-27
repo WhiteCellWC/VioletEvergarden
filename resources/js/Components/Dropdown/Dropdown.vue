@@ -11,6 +11,7 @@ import { debounce } from 'lodash';
 // Props
 const props = defineProps({
     modelValue: { type: [String, Number], default: '' },
+    modelLabel: { type: [String, Number], default: '' },
     fetchRoute: { type: String, default: '' },
     options: { type: Array, default: () => [] },
     allowSearch: { type: Boolean, default: false },
@@ -34,10 +35,9 @@ const searchTerm = ref('');
 const lastPage = ref(1);
 const nextPage = ref(1);
 const currentFetchToken = ref(0);
-const selectedLabel = ref(null);
 
 // Emits
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update:modelLabel']);
 
 // Computed
 const filteredOptions = computed(() => {
@@ -53,7 +53,7 @@ const showLoadMore = computed(() => allOptions.value.length > 0 && nextPage.valu
 const toggleDropdown = () => dropdownOpen.value = !dropdownOpen.value;
 
 const optionOnClick = (option) => {
-    selectedLabel.value = allOptions.value.find(o => o[props.valueKey] == option)?.[props.labelKey];
+    emit('update:modelLabel', allOptions.value.find(o => o[props.valueKey] == option)?.[props.labelKey]);
     emit('update:modelValue', option);
 }
 
@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
         <!-- Dropdown toggle -->
         <div class="flex items-center justify-between cursor-pointer" @click="toggleDropdown">
             <slot name="select">
-                <DropdownSelect :placeholder="placeholder" :selectedValue="selectedLabel || ''" />
+                <DropdownSelect :placeholder="placeholder" :selectedValue="modelLabel || ''" />
             </slot>
             <svg class="w-4 h-4 ml-2 transition-transform duration-200"
                 :class="dropdownOpen ? 'rotate-180' : 'rotate-0'" fill="none" stroke="currentColor" viewBox="0 0 24 24">

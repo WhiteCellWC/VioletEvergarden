@@ -59,7 +59,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-    <input :id="id" type="text" :placeholder="placeholder" :class="[
+    <input :id="id" type="text" :placeholder="placeholder" :value="modelValue" :class="[
         ...background,
         ...border,
         ...padding,
