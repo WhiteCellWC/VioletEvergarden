@@ -58,7 +58,7 @@ const cancel = () => {
                         placeholder="Select Country" :allowSearch="true" />
                 </div>
 
-                <div class="flex gap-4">
+                <div class="flex justify-end gap-4">
                     <Button type="button" background="bg-gray-500 text-white"
                         hover="hover:bg-gray-600 hover:outline-none hover:ring hover:ring-gray-500" @click="cancel">
                         Cancel

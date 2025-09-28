@@ -17,8 +17,11 @@ class LetterTypeService extends BaseService implements LetterTypeServiceInterfac
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = LetterTypeCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([LetterTypeCache::GET, LetterTypeCache::GET . "_" . $id])->remember(
-                LetterTypeCache::GET . "_" . $id,
+                $cacheKey,
                 LetterTypeCache::GET_EXPIRY,
                 fn() => LetterType::query()
                     ->when(

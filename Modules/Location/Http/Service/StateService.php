@@ -15,10 +15,9 @@ class StateService extends BaseService implements StateServiceInterface
     public function get(string $id, string|array|null $relation = null)
     {
         try {
-            $cacheKey = StateCache::GET_ALL . ':' . md5(json_encode([
-                'relation'   => $relation,
+            $cacheKey = StateCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
             ]));
-
             return Cache::tags([StateCache::GET, StateCache::GET . "_" . $id])->remember(
                 $cacheKey,
                 StateCache::GET_EXPIRY,

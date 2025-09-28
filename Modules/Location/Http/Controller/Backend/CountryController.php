@@ -7,8 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Modules\Location\Action\Country\CreateCountryAction;
+use Modules\Location\Action\Country\DeleteCountryAction;
 use Modules\Location\Action\Country\SearchCountryAction;
+use Modules\Location\Action\Country\UpdateCountryAction;
+use Modules\Location\Contract\CountryServiceInterface;
 use Modules\Location\Http\Request\Backend\Country\StoreCountryRequest;
+use Modules\Location\Http\Request\Backend\Country\UpdateCountryRequest;
 use Modules\Location\Http\Resource\Backend\CountryBackendResource;
 use Throwable;
 
@@ -16,7 +20,10 @@ class CountryController extends Controller
 {
     public function __construct(
         protected SearchCountryAction $searchCountryAction,
-        protected CreateCountryAction $createCountryAction
+        protected CreateCountryAction $createCountryAction,
+        protected UpdateCountryAction $updateCountryAction,
+        protected DeleteCountryAction $deleteCountryAction,
+        protected CountryServiceInterface $countryService
     ) {}
 
     public const parentPath = 'Country';
@@ -82,15 +89,29 @@ class CountryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $country = $this->countryService->get($id);
+
+            return Inertia::render(self::editPath, [
+                'country' => new CountryBackendResource($country)
+            ]);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCountryRequest $request, string $id)
     {
-        //
+        try {
+            $this->updateCountryAction->handle($request, $id);
+
+            return redirectView('countries.index', 'Country updated successfully!', FlagType::SUCCESS);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
@@ -98,6 +119,12 @@ class CountryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $name = $this->deleteCountryAction->handle($id);
+
+            return redirectView('countries.index', "$name deleted successfully!", FlagType::SUCCESS);
+        } catch (Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 }

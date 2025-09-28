@@ -4,15 +4,26 @@ import logo from '@/assets/logo/violet-evergarden-admin-dashboard.png'
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
 
-const locationOpen = ref(false)
+const openedDropdown = ref(null)
+const locationDropdown = ref('location');
+const letterComponentDropdown = ref('letter_component');
+
+const handleDropdownClick = (dropdown) => {
+    if (dropdown == openedDropdown.value) {
+        openedDropdown.value = null;
+    } else {
+        openedDropdown.value = dropdown;
+    }
+}
 
 onMounted(() => {
     if (route().current('states.*') || route().current('countries.*')) {
-        locationOpen.value = true;
+        openedDropdown.value = locationDropdown.value;
+    }
+    if (route().current('fragrance-types.*')) {
+        openedDropdown.value = letterComponentDropdown.value;
     }
 })
-
-
 </script>
 
 <template>
@@ -36,21 +47,46 @@ onMounted(() => {
             <a href="#" class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Letters</a>
             <a href="#" class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Packages</a>
 
-            <!-- Dropdown -->
+            <!-- Letter Component Dropdown -->
             <div>
-                <button @click="locationOpen = !locationOpen"
+                <button @click="handleDropdownClick(letterComponentDropdown)"
                     class="w-full flex items-center justify-between p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <span>Location</span>
-                    <svg :class="{ 'rotate-90': locationOpen }" class="w-4 h-4 transition-transform" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <span>Letter Component</span>
+                    <svg :class="{ 'rotate-90': openedDropdown == letterComponentDropdown }"
+                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
-                <div v-show="locationOpen" class="ml-4 mt-2 space-y-1 transition-all duration-200">
+                <div v-show="openedDropdown == letterComponentDropdown"
+                    class="ml-4 mt-2 space-y-1 transition-all duration-200">
+                    <Link :href="route('fragrance-types.index')"
+                        class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                        :class="{ 'bg-gray-200 dark:bg-gray-600 font-semibold': route().current('fragrance-types.*') }">
+                    Fragrance Type
+                    </Link>
+                </div>
+            </div>
+
+            <!-- Location Dropdown -->
+            <div>
+                <button @click="handleDropdownClick(locationDropdown)"
+                    class="w-full flex items-center justify-between p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span>Location</span>
+                    <svg :class="{ 'rotate-90': openedDropdown == locationDropdown }"
+                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <div v-show="openedDropdown == locationDropdown"
+                    class="ml-4 mt-2 space-y-1 transition-all duration-200">
                     <Link :href="route('countries.index')"
                         class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                        :class="{ 'bg-gray-200 dark:bg-gray-600 font-semibold': route().current('countries.*') }">Country
+                        :class="{ 'bg-gray-200 dark:bg-gray-600 font-semibold': route().current('countries.*') }">
+                    Country
                     </Link>
                     <Link :href="route('states.index')"
                         class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"

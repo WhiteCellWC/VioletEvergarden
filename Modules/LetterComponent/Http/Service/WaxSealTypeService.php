@@ -15,8 +15,11 @@ class WaxSealTypeService extends BaseService implements WaxSealTypeServiceInterf
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = WaxSealTypeCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([WaxSealTypeCache::GET, WaxSealTypeCache::GET . "_" . $id])->remember(
-                WaxSealTypeCache::GET . "_" . $id,
+                $cacheKey,
                 WaxSealTypeCache::GET_EXPIRY,
                 fn() => WaxSealType::when(
                     $id,

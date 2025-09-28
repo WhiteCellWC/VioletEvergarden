@@ -13,7 +13,7 @@ const page = usePage()
         <Sidebar />
 
         <!-- Main Content -->
-        <div class="col-span-4 flex flex-col gap-6">
+        <div class="col-span-4 flex flex-col gap-4">
             <!-- Topbar -->
             <header
                 class="bg-white dark:bg-[var(--dark-bg-100)] p-4 shadow-sm rounded-xl flex items-center justify-between">

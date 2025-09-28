@@ -1,8 +1,11 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Table from '@/Components/Table/Table.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue/Breadcrumb.vue';
+import Modal from '@/Components/Modal/Modal.vue';
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js';
+import { ref } from 'vue';
 
 //Props
 const props = defineProps({
@@ -18,7 +21,7 @@ const props = defineProps({
 });
 
 //Ref
-const columns = [
+const columns = ref([
     {
         label: 'Name',
         field: 'name',
@@ -33,15 +36,23 @@ const columns = [
         field: 'created_at',
         sortable: true
     }
-];
+]);
+const breadcrumbs = ref([
+    {
+        label: 'Dashboard',
+        url: route('dashboard')
+    },
+    {
+        label: 'State',
+        active: true
+    }
+]);
 </script>
 
 <template>
     <AdminLayout>
         <template #breadcrumb>
-            <div>
-                Dashboard > <span class="text-[var(--primary-50)]">State</span>
-            </div>
+            <Breadcrumb :items="breadcrumbs" />
         </template>
         <template #content>
             <div class="px-4 py-2 bg-gray-600">
@@ -67,6 +78,7 @@ const columns = [
                     </template>
                 </Table>
             </div>
+            <Modal />
         </template>
     </AdminLayout>
 </template>

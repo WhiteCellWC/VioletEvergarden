@@ -14,9 +14,12 @@ class FragranceTypeService extends BaseService implements FragranceTypeServiceIn
 {
     public function get(string $id, string|array|null $relation = null)
     {
+        $cacheKey = FragranceTypeCache::GET . '_' . $id . ':' . md5(json_encode([
+            'relation' => $relation
+        ]));
         try {
             return Cache::tags([FragranceTypeCache::GET, FragranceTypeCache::GET . "_" . $id])->remember(
-                FragranceTypeCache::GET . "_" . $id,
+                $cacheKey,
                 FragranceTypeCache::GET_EXPIRY,
                 fn() => FragranceType::query()
                     ->when(

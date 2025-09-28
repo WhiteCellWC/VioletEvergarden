@@ -4,6 +4,7 @@ namespace App\Models;
 
 class FragranceType extends BaseModel
 {
+    // Table Column Start
     public const table = 'fragrance_types';
 
     public const id = 'id';
@@ -25,6 +26,11 @@ class FragranceType extends BaseModel
     public const createdBy = 'created_by';
 
     public const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const images = 'images';
+    // Relation End
 
     protected $fillable = [
         'name',

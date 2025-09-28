@@ -15,8 +15,11 @@ class EnvelopeTypeService extends BaseService implements EnvelopeTypeServiceInte
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = EnvelopeTypeCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([EnvelopeTypeCache::GET, EnvelopeTypeCache::GET . "_" . $id])->remember(
-                EnvelopeTypeCache::GET . "_" . $id,
+                $cacheKey,
                 EnvelopeTypeCache::GET_EXPIRY,
                 fn() => EnvelopeType::query()
                     ->when(

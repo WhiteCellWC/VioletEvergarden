@@ -3,9 +3,12 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 // Components
 import TextInput from '@/Components/Input/TextInput.vue';
-import Label from '@/Components/Label/Label.vue';
-import Dropdown from '@/Components/Dropdown/Dropdown.vue';
+import TextAreaInput from '@/Components/Input/TextAreaInput.vue';
+import NumberInput from '@/Components/Input/NumberInput.vue';
+import ToggleInput from '@/Components/Input/ToggleInput.vue';
+import ImageMultipleInput from '@/Components/Input/ImageMultipleInput.vue';
 import Button from '@/Components/Button/Button.vue';
+import Label from '@/Components/Label/Label.vue';
 //Libs
 import { route } from 'ziggy-js';
 import { useForm } from '@inertiajs/vue3';
@@ -13,12 +16,17 @@ import { useForm } from '@inertiajs/vue3';
 // Ref
 const form = useForm({
     name: '',
-    country_id: ''
+    description: '',
+    price: '',
+    images: null,
+    image: null,
+    is_premium: false,
+    status: true
 })
 
 // Handlers
 const submit = () => {
-    form.post(route('states.store'))
+    form.post(route('fragrance-types.store'))
 }
 
 const cancel = () => {
@@ -32,21 +40,35 @@ const cancel = () => {
         <template #content>
             <div class="px-4 py-2 bg-gray-600">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-bold">States</h2>
+                    <h2 class="text-xl font-bold">Fragrance Type</h2>
                 </div>
             </div>
 
             <form @submit.prevent="submit" class="p-8 flex flex-col w-1/2 gap-6">
                 <div class="flex flex-col gap-2">
-                    <Label for="name" mandatory>State</Label>
+                    <Label for="name" mandatory>Fragrance Name</Label>
                     <TextInput id="name" placeholder="Input Name" v-model="form.name" />
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <Label for="country_id" mandatory>Country</Label>
-                    <Dropdown v-model="form.country_id" :fetchRoute="route('api.v1.countries.index')" :valueKey="'id'"
-                        :labelKey="'name'" placeholder="Select Country" :allowSearch="true" />
+                    <Label for="description" mandatory>Description</Label>
+                    <TextAreaInput id="description" placeholder="Input Description" v-model="form.description" />
                 </div>
+
+
+                <div class="flex flex-col gap-2">
+                    <Label for="price" mandatory>Price</Label>
+                    <NumberInput id="price" placeholder="Input Price" v-model="form.price" />
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <Label mandatory>Image</Label>
+                    <ImageMultipleInput v-model="form.images" />
+                </div>
+
+                <ToggleInput v-model="form.is_premium" label="Is Premium" />
+
+                <ToggleInput v-model="form.status" label="Status" />
 
                 <div class="flex justify-end gap-4">
                     <Button type="button" background="bg-gray-500 text-white"

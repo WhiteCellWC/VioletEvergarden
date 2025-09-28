@@ -15,8 +15,11 @@ class LetterService extends BaseService implements LetterServiceInterface
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = LetterCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([LetterCache::GET, LetterCache::GET . "_" . $id])->remember(
-                LetterCache::GET . "_" . $id,
+                $cacheKey,
                 LetterCache::GET_EXPIRY,
                 fn() => Letter::query()
                     ->when(

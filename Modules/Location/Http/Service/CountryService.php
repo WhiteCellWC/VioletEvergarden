@@ -16,10 +16,9 @@ class CountryService extends BaseService implements CountryServiceInterface
     public function get(string $id, array|string|null $relation = null)
     {
         try {
-            $cacheKey = CountryCache::GET . ':' . md5(json_encode([
-                'relation' => $relation,
+            $cacheKey = CountryCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
             ]));
-
             return Cache::tags([CountryCache::GET, CountryCache::GET . "_" . $id])->remember(
                 $cacheKey,
                 CountryCache::GET_EXPIRY,

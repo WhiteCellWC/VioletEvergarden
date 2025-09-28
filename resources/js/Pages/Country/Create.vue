@@ -3,8 +3,8 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 // Components
 import TextInput from '@/Components/Input/TextInput.vue';
+import Button from '@/Components/Button/Button.vue';
 import Label from '@/Components/Label/Label.vue';
-import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 //Libs
 import { route } from 'ziggy-js';
 import { useForm } from '@inertiajs/vue3';
@@ -53,15 +53,14 @@ const cancel = () => {
                 </div>
 
 
-                <div class="flex gap-4">
-                    <button type="button" @click="cancel"
-                        class="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-600">
+                <div class="flex justify-end gap-4">
+                    <Button type="button" background="bg-gray-500 text-white"
+                        hover="hover:bg-gray-600 hover:outline-none hover:ring hover:ring-gray-500" @click="cancel">
                         Cancel
-                    </button>
-                    <button type="submit" :disabled="form.processing"
-                        class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
+                    </Button>
+                    <Button :disabled="form.processing">
                         Save
-                    </button>
+                    </Button>
                 </div>
             </form>
         </template>

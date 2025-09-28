@@ -15,8 +15,11 @@ class PaperTypeService extends BaseService implements PaperTypeServiceInterface
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = PaperTypeCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([PaperTypeCache::GET, PaperTypeCache::GET . "_" . $id])->remember(
-                PaperTypeCache::GET . "_" . $id,
+                $cacheKey,
                 PaperTypeCache::GET_EXPIRY,
                 fn() => PaperType::when(
                     $id,

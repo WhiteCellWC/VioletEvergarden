@@ -144,7 +144,7 @@ watch(limit, (newLimit) => {
             <!-- Head -->
             <thead class="bg-gray-100 dark:bg-gray-800">
                 <tr>
-                    <th class="px-2 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Actions</th>
+                    <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">Actions</th>
                     <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">No</th>
                     <th v-for="(col, i) in columns" :key="i"
                         class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-start">
@@ -169,7 +169,7 @@ watch(limit, (newLimit) => {
             <tbody>
                 <tr v-for="(row, i) in resource.data" :key="row.id"
                     class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                    <td class="px-2 py-2 border-b border-gray-300 dark:border-gray-700">
+                    <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">
                         <slot name="actions" :row="row" />
                     </td>
 

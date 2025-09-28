@@ -15,8 +15,11 @@ class LetterTemplateService extends BaseService implements LetterTemplateService
     public function get(string $id, string|array|null $relation = null)
     {
         try {
+            $cacheKey = LetterTemplateCache::GET . '_' . $id . ':' . md5(json_encode([
+                'relation' => $relation
+            ]));
             return Cache::tags([LetterTemplateCache::GET, LetterTemplateCache::GET . "_" . $id])->remember(
-                LetterTemplateCache::GET . "_" . $id,
+                $cacheKey,
                 LetterTemplateCache::GET_EXPIRY,
                 fn() => LetterTemplate::query()
                     ->when(
