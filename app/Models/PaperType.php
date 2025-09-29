@@ -4,6 +4,7 @@ namespace App\Models;
 
 class PaperType extends BaseModel
 {
+    // Table Column Start
     const table = 'paper_types';
 
     const id = 'id';
@@ -11,8 +12,6 @@ class PaperType extends BaseModel
     const name = 'name';
 
     const stock = 'stock';
-
-    const gradient = 'gradient';
 
     const pricePerPage = 'price_per_page';
 
@@ -27,11 +26,15 @@ class PaperType extends BaseModel
     const createdBy = 'created_by';
 
     const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const images = 'images';
+    // Relation End
 
     protected $fillable = [
         'name',
         'stock',
-        'gradient',
         'price_per_page',
         'description',
         'is_premium',

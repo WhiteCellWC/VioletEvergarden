@@ -10,7 +10,6 @@ class SearchPaperTypeDto
     public function __construct(
         public ?string $name,
         public ?int $stock,
-        public ?string $gradient,
         public ?float $pricePerPage,
         public ?string $description,
         public ?bool $isPremium,
@@ -23,7 +22,6 @@ class SearchPaperTypeDto
         return [
             PaperType::name => $this->name,
             PaperType::stock => $this->stock,
-            PaperType::gradient => $this->gradient,
             PaperType::pricePerPage => $this->pricePerPage,
             PaperType::description => $this->description,
             PaperType::isPremium => $this->isPremium,
@@ -37,7 +35,6 @@ class SearchPaperTypeDto
         return new self(
             $request->name,
             $request->stock,
-            $request->gradient,
             $request->price_per_page,
             $request->description,
             $request->is_premium,

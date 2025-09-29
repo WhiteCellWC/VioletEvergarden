@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('stock');
-            $table->string('gradient');
             $table->decimal('price_per_page');
             $table->text('description');
             $table->boolean('is_premium')->default(false);

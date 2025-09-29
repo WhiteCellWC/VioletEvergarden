@@ -29,7 +29,6 @@ class UpdatePaperTypeApiRequest extends FormRequest
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'exists:' . CoreImage::table . ',' . CoreImage::id,
             'stock' => 'required|integer|min:0',
-            'gradient' => 'required',
             'price_per_page' => 'required|numeric|min:0',
             'description' => 'required',
             'is_premium' => 'nullable|boolean',

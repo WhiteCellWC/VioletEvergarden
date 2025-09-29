@@ -1,10 +1,11 @@
 <?php
 
-namespace Modules\LetterComponent\Http\Request\Api\V1\PaperType;
+namespace Modules\LetterComponent\Http\Request\Backend\PaperType;
 
+use App\Models\CoreImage;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePaperTypeApiRequest extends FormRequest
+class UpdatePaperTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,10 @@ class StorePaperTypeApiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'images' => 'required|array',
+            'images' => 'nullable|array',
             'images.*' => 'image',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:' . CoreImage::table . ',' . CoreImage::id,
             'stock' => 'required|integer|min:0',
             'price_per_page' => 'required|numeric|min:0',
             'description' => 'required',

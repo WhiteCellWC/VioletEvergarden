@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\LetterComponent\Http\Request\Api\V1\PaperType;
+namespace Modules\LetterComponent\Http\Request\Backend\PaperType;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePaperTypeApiRequest extends FormRequest
+class StorePaperTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

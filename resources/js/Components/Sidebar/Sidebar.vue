@@ -20,7 +20,7 @@ onMounted(() => {
     if (route().current('states.*') || route().current('countries.*')) {
         openedDropdown.value = locationDropdown.value;
     }
-    if (route().current('fragrance-types.*') || route().current('envelope-types.*')) {
+    if (route().current('fragrance-types.*') || route().current('envelope-types.*') || route().current('paper-types.*')) {
         openedDropdown.value = letterComponentDropdown.value;
     }
 })
@@ -70,6 +70,11 @@ onMounted(() => {
                         class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                         :class="{ 'bg-gray-200 dark:bg-gray-600 font-semibold': route().current('envelope-types.*') }">
                     Envelope Type
+                    </Link>
+                    <Link :href="route('paper-types.index')"
+                        class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                        :class="{ 'bg-gray-200 dark:bg-gray-600 font-semibold': route().current('paper-types.*') }">
+                    Paper Type
                     </Link>
                 </div>
             </div>
