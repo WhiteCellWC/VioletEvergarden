@@ -2,9 +2,17 @@
 // Props
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, null],
         required: true,
         default: ''
+    },
+    min: {
+        type: Number,
+        required: false
+    },
+    max: {
+        type: Number,
+        required: false
     },
     id: {
         type: String,
@@ -67,7 +75,7 @@ const emit = defineEmits(['update:modelValue']);
         ...transition,
         ...focus,
         ...extraClass
-    ]" @input="emit('update:modelValue', $event.target.value)" />
+    ]" @input="emit('update:modelValue', $event.target.value)" :min="min" :max="max" />
 </template>
 
 <style scoped>

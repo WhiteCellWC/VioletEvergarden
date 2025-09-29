@@ -5,6 +5,7 @@ namespace App\Models;
 
 class EnvelopeType extends BaseModel
 {
+    // Table Column Start
     public const table = 'envelope_types';
 
     public const id = 'id';
@@ -28,6 +29,11 @@ class EnvelopeType extends BaseModel
     public const createdBy = 'created_by';
 
     public const updatedBy = 'updated_by';
+    // Table Column End
+
+    // Relation Start
+    public const images = 'images';
+    // Relation End
 
     protected $fillable = [
         'name',
